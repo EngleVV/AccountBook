@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:orientation="vertical">
+
+    <RelativeLayout 
+        android:id="@+id/account_center_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_style_color"
+        >
+        <TextView 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/str_title_account_center"
+            android:gravity="center_horizontal|center_vertical"
+            style="@style/titleStyle"
+            android:layout_margin="15dp"
+            />
+        
+    </RelativeLayout>
+    
+    
+	<ListView 
+	    android:id="@+id/account_list"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_marginStart="10dp"
+		android:layout_marginTop="10dp"
+		android:layout_marginEnd="10dp"
+		android:cacheColorHint="#00000000"
+		android:listSelector="#00000000"
+	    ></ListView>
+    
+</LinearLayout>
