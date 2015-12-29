@@ -13,7 +13,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class AccountDatabaseHelper extends SQLiteOpenHelper {
 
 	/** 建表sql语句 */
-	private String CREATE_TABLE_SQL = "create table account_list(_id integer primary key autoincrement, name, amount)";
+	private String CREATE_TABLE_SQL = "create table account_list(id integer primary key, name, amount)";
+	private String INIT_SQL = "insert into account_list values(0, '现金', 0.00), (1, '银行卡', 0.00),(2, '支付宝', 0.00),(3, '微信', 0.00)";
 
 	public AccountDatabaseHelper(Context context, String name, int version) {
 		super(context, name, null, version);
@@ -22,6 +23,7 @@ public class AccountDatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(CREATE_TABLE_SQL);
+		db.execSQL(INIT_SQL);
 	}
 
 	@Override

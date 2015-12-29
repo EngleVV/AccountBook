@@ -19,5 +19,6 @@
     <string name="str_title_account_center">账户中心</string>
     <string name="str_title_main_page">账务概况</string>
     <string name="str_title_setting_center">设置中心</string>
+    <string name="str_hint_modify_balance">请输入修改后金额</string>
 
 </resources>

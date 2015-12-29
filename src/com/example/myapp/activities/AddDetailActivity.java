@@ -82,14 +82,10 @@ public class AddDetailActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(AddDetailActivity.this,
-						MainIndexActivity.class);
-				startActivity(intent);
+				finish();
 			}
 		});
 
-		// 点击编辑框,清空里面数据
 		final EditText editTextAmountValue = (EditText) findViewById(R.id.add_detail_item_amount_value);
 		editTextAmountValue.setFocusable(true);
 		editTextAmountValue.setFocusableInTouchMode(true);
@@ -105,6 +101,6 @@ public class AddDetailActivity extends Activity {
 				inputManager.showSoftInput(editTextAmountValue, 0);
 
 			}
-		}, 1000);
+		}, 500);
 	}
 }
