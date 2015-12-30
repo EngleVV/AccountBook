@@ -13,14 +13,18 @@
         android:icon="@drawable/icon_application"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity android:name="com.example.myapp.activities.AddDetailActivity" >
+        <activity android:name=".activities.AddDetailActivity" >
         </activity>
-        <activity android:name="com.example.myapp.activities.MainIndexActivity" >
+        <activity android:name=".activities.MainIndexActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ShowDetailActivity"
+            android:label="@string/title_activity_show_detail" >
         </activity>
     </application>
 

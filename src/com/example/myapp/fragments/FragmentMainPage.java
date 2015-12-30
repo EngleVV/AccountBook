@@ -18,12 +18,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.example.myapp.R;
+import com.example.myapp.ShowDetailActivity;
 import com.example.myapp.activities.AddDetailActivity;
 import com.example.myapp.common.Week;
 import com.example.myapp.common.util.CalendarUtils;
@@ -141,6 +144,17 @@ public class FragmentMainPage extends Fragment {
 
 		ListView listView = (ListView) rootView.findViewById(R.id.detailList);
 		listView.setAdapter(simpleAdapter);
+
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Intent intent = new Intent(getActivity(),
+						ShowDetailActivity.class);
+				startActivity(intent);
+			}
+		});
 
 		// 显示月支出总金额
 		TextView textViewAmountValue = (TextView) rootView

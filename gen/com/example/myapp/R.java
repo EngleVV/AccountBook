@@ -15,6 +15,9 @@ public final class R {
     public static final class attr {
     }
     public static final class color {
+        public static final int brown=0x7f040007;
+        public static final int deep_gray=0x7f040006;
+        public static final int gray=0x7f040005;
         public static final int main_style_color=0x7f040002;
         public static final int red=0x7f040003;
         public static final int tab_bk=0x7f040000;
@@ -67,14 +70,14 @@ public final class R {
         public static final int tab_btn_more=0x7f02001f;
     }
     public static final class id {
-        public static final int account_center_title=0x7f0a0019;
-        public static final int account_list=0x7f0a001a;
-        public static final int account_list_amount=0x7f0a0034;
-        public static final int account_list_logo=0x7f0a0031;
-        public static final int account_list_modify=0x7f0a0033;
-        public static final int account_list_name=0x7f0a0032;
-        public static final int action_settings=0x7f0a003b;
-        public static final int add=0x7f0a0022;
+        public static final int account_center_title=0x7f0a001a;
+        public static final int account_list=0x7f0a001b;
+        public static final int account_list_amount=0x7f0a0036;
+        public static final int account_list_logo=0x7f0a0033;
+        public static final int account_list_modify=0x7f0a0035;
+        public static final int account_list_name=0x7f0a0034;
+        public static final int action_settings=0x7f0a0044;
+        public static final int add=0x7f0a0024;
         public static final int add_detail_button=0x7f0a0010;
         public static final int add_detail_button_record_again=0x7f0a0012;
         public static final int add_detail_button_submit=0x7f0a0011;
@@ -94,39 +97,48 @@ public final class R {
         public static final int add_detail_title=0x7f0a0001;
         public static final int add_detail_title_back=0x7f0a0002;
         public static final int add_detail_title_text=0x7f0a0003;
-        public static final int amount=0x7f0a0037;
-        public static final int amountText=0x7f0a0020;
-        public static final int amountValue=0x7f0a0021;
-        public static final int date=0x7f0a001c;
-        public static final int detail=0x7f0a0024;
-        public static final int detailList=0x7f0a0025;
-        public static final int imageView2=0x7f0a002a;
-        public static final int imageView3=0x7f0a002d;
-        public static final int imageView4=0x7f0a0030;
-        public static final int imageView5=0x7f0a0028;
-        public static final int imageView6=0x7f0a002e;
-        public static final int imageView7=0x7f0a002b;
-        public static final int imageview=0x7f0a0039;
-        public static final int llayout01=0x7f0a0027;
-        public static final int llayout02=0x7f0a0029;
-        public static final int llayout03=0x7f0a002c;
-        public static final int llayout04=0x7f0a002f;
-        public static final int logo=0x7f0a0035;
-        public static final int main_add_button=0x7f0a0023;
-        public static final int main_dialog_layout=0x7f0a0026;
-        public static final int modify_balance_amount=0x7f0a0038;
-        public static final int month=0x7f0a001d;
+        public static final int amount=0x7f0a0040;
+        public static final int amountText=0x7f0a0022;
+        public static final int amountValue=0x7f0a0023;
+        public static final int date=0x7f0a001e;
+        public static final int day_detail_item_consume_amount=0x7f0a003d;
+        public static final int day_detail_item_date=0x7f0a0037;
+        public static final int day_detail_item_date_month=0x7f0a0038;
+        public static final int day_detail_item_date_week=0x7f0a0039;
+        public static final int day_detail_item_type=0x7f0a003a;
+        public static final int day_detail_item_type_account=0x7f0a003c;
+        public static final int day_detail_item_type_consume=0x7f0a003b;
+        public static final int detail=0x7f0a0026;
+        public static final int detailList=0x7f0a0027;
+        public static final int imageView2=0x7f0a002c;
+        public static final int imageView3=0x7f0a002f;
+        public static final int imageView4=0x7f0a0032;
+        public static final int imageView5=0x7f0a002a;
+        public static final int imageView6=0x7f0a0030;
+        public static final int imageView7=0x7f0a002d;
+        public static final int imageview=0x7f0a0042;
+        public static final int list_view_day_detail=0x7f0a001c;
+        public static final int llayout01=0x7f0a0029;
+        public static final int llayout02=0x7f0a002b;
+        public static final int llayout03=0x7f0a002e;
+        public static final int llayout04=0x7f0a0031;
+        public static final int logo=0x7f0a003e;
+        public static final int main_add_button=0x7f0a0025;
+        public static final int main_dialog_layout=0x7f0a0028;
+        public static final int modify_balance_amount=0x7f0a0041;
+        public static final int month=0x7f0a001f;
         public static final int realtabcontent=0x7f0a0013;
-        public static final int root=0x7f0a001b;
-        public static final int show_detail_list=0x7f0a0018;
-        public static final int show_detail_title_amount=0x7f0a0017;
-        public static final int show_detail_title_text=0x7f0a0016;
-        public static final int summary=0x7f0a001f;
+        public static final int root=0x7f0a001d;
+        public static final int show_detail_container=0x7f0a0019;
+        public static final int show_detail_title=0x7f0a0016;
+        public static final int show_detail_title_amount=0x7f0a0018;
+        public static final int show_detail_title_text=0x7f0a0017;
+        public static final int summary=0x7f0a0021;
         public static final int tab_account=0x7f0a0015;
         public static final int tab_summary=0x7f0a0014;
-        public static final int textview=0x7f0a003a;
-        public static final int title=0x7f0a0036;
-        public static final int year=0x7f0a001e;
+        public static final int textview=0x7f0a0043;
+        public static final int title=0x7f0a003f;
+        public static final int year=0x7f0a0020;
     }
     public static final class layout {
         public static final int activity_add_detail=0x7f030000;
@@ -134,18 +146,21 @@ public final class R {
         public static final int activity_main_tab=0x7f030002;
         public static final int activity_show_detail=0x7f030003;
         public static final int fragment_account_center=0x7f030004;
-        public static final int fragment_main_page=0x7f030005;
-        public static final int fragment_setting_center=0x7f030006;
-        public static final int item=0x7f030007;
-        public static final int simple_item_account_list=0x7f030008;
-        public static final int simple_item_detail_list=0x7f030009;
-        public static final int simple_item_modify_balance=0x7f03000a;
-        public static final int tab_item_view=0x7f03000b;
+        public static final int fragment_day_detail_list=0x7f030005;
+        public static final int fragment_main_page=0x7f030006;
+        public static final int fragment_setting_center=0x7f030007;
+        public static final int item=0x7f030008;
+        public static final int simple_item_account_list=0x7f030009;
+        public static final int simple_item_day_detail_list=0x7f03000a;
+        public static final int simple_item_detail_list=0x7f03000b;
+        public static final int simple_item_modify_balance=0x7f03000c;
+        public static final int tab_item_view=0x7f03000d;
     }
     public static final class menu {
         public static final int main=0x7f090000;
         public static final int main_index=0x7f090001;
         public static final int main_tab=0x7f090002;
+        public static final int show_detail=0x7f090003;
     }
     public static final class string {
         public static final int action_settings=0x7f070001;
@@ -165,18 +180,32 @@ public final class R {
         public static final int str_title_amount_text=0x7f070002;
         public static final int str_title_main_page=0x7f070010;
         public static final int str_title_setting_center=0x7f070011;
+        public static final int str_title_show_detail=0x7f070014;
         public static final int title_activity_main_index=0x7f07000e;
         public static final int title_activity_main_tab=0x7f07000c;
+        public static final int title_activity_show_detail=0x7f070013;
     }
     public static final class style {
         /** 
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
+
+
+
+
+
     
 
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
+
+
+
+
+
+
         
 
         Base application theme for API 11+. This theme completely replaces
@@ -197,6 +226,11 @@ public final class R {
         public static final int accountListAmountStyle=0x7f080006;
         public static final int accountListTitleStyle=0x7f080005;
         public static final int amountStyle=0x7f080003;
+        public static final int dayDetailListAccountTypeStyle=0x7f08000a;
+        public static final int dayDetailListConsumeAmountType=0x7f08000b;
+        public static final int dayDetailListConsumeTypeStyle=0x7f080009;
+        public static final int dayDetailListMonthDayStyle=0x7f080007;
+        public static final int dayDetailListWeekDayStyle=0x7f080008;
         public static final int style1=0x7f080002;
         public static final int titleStyle=0x7f080004;
     }
