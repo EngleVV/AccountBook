@@ -1,11 +1,14 @@
-package com.example.myapp;
+package com.example.myapp.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.myapp.R;
 import com.example.myapp.fragments.FragmentDayDetail;
+import com.example.myapp.fragments.FragmentMonthDetail;
 
 public class ShowDetailActivity extends FragmentActivity {
 
@@ -14,9 +17,34 @@ public class ShowDetailActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_show_detail);
 
-		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.show_detail_container, new FragmentDayDetail())
-				.commit();
+		Intent intent = getIntent();
+		int position = intent.getIntExtra("position", 0);
+		switch (position) {
+		case 0:
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(R.id.show_detail_container,
+							new FragmentDayDetail()).commit();
+			break;
+		case 1:
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(R.id.show_detail_container,
+							new FragmentDayDetail()).commit();
+			break;
+		case 2:
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(R.id.show_detail_container,
+							new FragmentMonthDetail()).commit();
+			break;
+		case 3:
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(R.id.show_detail_container,
+							new FragmentDayDetail()).commit();
+			break;
+		}
 	}
 
 	@Override

@@ -22,5 +22,7 @@
     <string name="str_hint_modify_balance">请输入修改后金额</string>
     <string name="title_activity_show_detail">ShowDetailActivity</string>
     <string name="str_title_show_detail">消费明细</string>
+    <string name="week">周</string>
+    <string name="month">月</string>
 
 </resources>

@@ -26,8 +26,8 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.example.myapp.R;
-import com.example.myapp.ShowDetailActivity;
 import com.example.myapp.activities.AddDetailActivity;
+import com.example.myapp.activities.ShowDetailActivity;
 import com.example.myapp.common.Week;
 import com.example.myapp.common.util.CalendarUtils;
 import com.example.myapp.db.DetailDatabaseHelper;
@@ -150,8 +150,11 @@ public class FragmentMainPage extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
+				Bundle bundle = new Bundle();
+				bundle.putInt("position", position);
 				Intent intent = new Intent(getActivity(),
 						ShowDetailActivity.class);
+				intent.putExtras(bundle);
 				startActivity(intent);
 			}
 		});
