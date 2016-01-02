@@ -64,10 +64,9 @@ public final class R {
         public static final int shape=0x7f020019;
         public static final int shape_edittext_bg_focused=0x7f02001a;
         public static final int shape_edittext_bg_normal=0x7f02001b;
-        public static final int star=0x7f02001c;
-        public static final int tab_btn_accountbook=0x7f02001d;
-        public static final int tab_btn_home=0x7f02001e;
-        public static final int tab_btn_more=0x7f02001f;
+        public static final int tab_btn_accountbook=0x7f02001c;
+        public static final int tab_btn_home=0x7f02001d;
+        public static final int tab_btn_more=0x7f02001e;
     }
     public static final class id {
         public static final int account_center_title=0x7f0a001a;
@@ -76,7 +75,7 @@ public final class R {
         public static final int account_list_logo=0x7f0a0034;
         public static final int account_list_modify=0x7f0a0036;
         public static final int account_list_name=0x7f0a0035;
-        public static final int action_settings=0x7f0a0048;
+        public static final int action_settings=0x7f0a0049;
         public static final int add=0x7f0a0024;
         public static final int add_detail_button=0x7f0a0010;
         public static final int add_detail_button_record_again=0x7f0a0012;
@@ -116,7 +115,7 @@ public final class R {
         public static final int imageView5=0x7f0a002b;
         public static final int imageView6=0x7f0a0031;
         public static final int imageView7=0x7f0a002e;
-        public static final int imageview=0x7f0a0046;
+        public static final int imageview=0x7f0a0047;
         public static final int list_view_day_detail=0x7f0a001c;
         public static final int list_view_month_detail=0x7f0a0028;
         public static final int llayout01=0x7f0a002a;
@@ -128,8 +127,9 @@ public final class R {
         public static final int main_dialog_layout=0x7f0a0029;
         public static final int modify_balance_amount=0x7f0a0042;
         public static final int month=0x7f0a001f;
-        public static final int month_detail_amount=0x7f0a0045;
-        public static final int month_detail_date_range=0x7f0a0044;
+        public static final int month_detail_amount=0x7f0a0046;
+        public static final int month_detail_date_range=0x7f0a0045;
+        public static final int month_detail_date_tag=0x7f0a0044;
         public static final int month_detail_week_index=0x7f0a0043;
         public static final int realtabcontent=0x7f0a0013;
         public static final int root=0x7f0a001d;
@@ -140,7 +140,7 @@ public final class R {
         public static final int summary=0x7f0a0021;
         public static final int tab_account=0x7f0a0015;
         public static final int tab_summary=0x7f0a0014;
-        public static final int textview=0x7f0a0047;
+        public static final int textview=0x7f0a0048;
         public static final int title=0x7f0a0040;
         public static final int year=0x7f0a0020;
     }

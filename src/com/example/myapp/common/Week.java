@@ -1,3 +1,8 @@
+/*
+ * https://github.com/EngleVV/MyRepository
+ * Copyright (c) 2004-2015 All Rights Reserved.
+ */
+
 package com.example.myapp.common;
 
 import java.util.Calendar;

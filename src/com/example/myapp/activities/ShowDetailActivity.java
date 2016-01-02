@@ -1,3 +1,8 @@
+/*
+ * https://github.com/EngleVV/MyRepository
+ * Copyright (c) 2004-2015 All Rights Reserved.
+ */
+
 package com.example.myapp.activities;
 
 import android.content.Intent;
@@ -9,6 +14,8 @@ import android.view.MenuItem;
 import com.example.myapp.R;
 import com.example.myapp.fragments.FragmentDayDetail;
 import com.example.myapp.fragments.FragmentMonthDetail;
+import com.example.myapp.fragments.FragmentWeekDetail;
+import com.example.myapp.fragments.FragmentYearDetail;
 
 public class ShowDetailActivity extends FragmentActivity {
 
@@ -30,7 +37,7 @@ public class ShowDetailActivity extends FragmentActivity {
 			getSupportFragmentManager()
 					.beginTransaction()
 					.replace(R.id.show_detail_container,
-							new FragmentDayDetail()).commit();
+							new FragmentWeekDetail()).commit();
 			break;
 		case 2:
 			getSupportFragmentManager()
@@ -42,7 +49,7 @@ public class ShowDetailActivity extends FragmentActivity {
 			getSupportFragmentManager()
 					.beginTransaction()
 					.replace(R.id.show_detail_container,
-							new FragmentDayDetail()).commit();
+							new FragmentYearDetail()).commit();
 			break;
 		}
 	}

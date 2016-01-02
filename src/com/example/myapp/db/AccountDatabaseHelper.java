@@ -1,6 +1,8 @@
-/**
- * 
+/*
+ * https://github.com/EngleVV/MyRepository
+ * Copyright (c) 2004-2015 All Rights Reserved.
  */
+
 package com.example.myapp.db;
 
 import android.content.Context;

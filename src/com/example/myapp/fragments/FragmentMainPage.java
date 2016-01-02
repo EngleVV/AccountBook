@@ -1,3 +1,8 @@
+/*
+ * https://github.com/EngleVV/MyRepository
+ * Copyright (c) 2004-2015 All Rights Reserved.
+ */
+
 package com.example.myapp.fragments;
 
 import java.text.SimpleDateFormat;
@@ -66,7 +71,7 @@ public class FragmentMainPage extends Fragment {
 		View rootView = inflater.inflate(R.layout.fragment_main_page, null);
 
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-				"yyyy-MM-dd hh:mm:ss", Locale.CHINA);
+				"yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 		// 获取当前年月
 		Calendar calendar = Calendar.getInstance();
 		TextView textViewMonth = (TextView) rootView.findViewById(R.id.month);
