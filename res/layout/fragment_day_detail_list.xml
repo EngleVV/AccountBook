@@ -6,7 +6,8 @@
     <ListView
         android:id="@+id/list_view_day_detail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:background="@color/itemBackground" >
     </ListView>
 
 </FrameLayout>

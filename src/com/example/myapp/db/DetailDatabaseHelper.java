@@ -15,8 +15,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DetailDatabaseHelper extends SQLiteOpenHelper {
 
 	/** 建表sql语句 */
-	final String CREATE_TABLE_SQL = "create table detail_record(_id integer primary key autoincrement, "
-			+ "amount, " + "type, " + "date, " + "accountType)";
+	final String CREATE_TABLE_SQL = "create table detail_record(uuid primary key, "
+			+ "amount, " + "type, " + "date, " + "accountType, lastModifyDate)";
 
 	public DetailDatabaseHelper(Context context, String name, int version) {
 		super(context, name, null, version);

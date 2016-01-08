@@ -12,10 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.myapp.R;
-import com.example.myapp.fragments.FragmentDayDetail;
-import com.example.myapp.fragments.FragmentMonthDetail;
-import com.example.myapp.fragments.FragmentWeekDetail;
-import com.example.myapp.fragments.FragmentYearDetail;
+import com.example.myapp.fragments.details.FragmentDayDetail;
+import com.example.myapp.fragments.details.FragmentMonthDetail;
+import com.example.myapp.fragments.details.FragmentWeekDetail;
+import com.example.myapp.fragments.details.FragmentYearDetail;
 
 public class ShowDetailActivity extends FragmentActivity {
 

@@ -7,6 +7,8 @@
         android:id="@+id/list_view_month_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:divider="@color/main_style_color"
+        android:dividerHeight="3dp"
         android:groupIndicator="@null" >
     </ExpandableListView>
 

@@ -6,8 +6,10 @@
 package com.example.myapp.activities;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -69,6 +71,12 @@ public class AddDetailActivity extends Activity {
 					contentValues.put("accountType", spinnerAccountType
 							.getSelectedItem().toString()
 							.getBytes("gb2312" + ""));
+
+					contentValues.put("lastModifyDate",
+							CalendarUtils.toStandardDateString(new Date()));
+
+					contentValues.put("uuid", UUID.randomUUID().toString());
+
 					dbHelper = new DetailDatabaseHelper(AddDetailActivity.this,
 							"detail.db3", 1);
 					dbHelper.getWritableDatabase().insert("detail_record",

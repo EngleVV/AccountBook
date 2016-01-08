@@ -5,12 +5,11 @@
 
 package com.example.myapp.fragments;
 
-import java.text.SimpleDateFormat;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
@@ -18,7 +17,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,12 +31,16 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.example.myapp.GlobleData;
 import com.example.myapp.R;
 import com.example.myapp.activities.AddDetailActivity;
 import com.example.myapp.activities.ShowDetailActivity;
+import com.example.myapp.common.DetailItem;
 import com.example.myapp.common.Week;
 import com.example.myapp.common.util.CalendarUtils;
+import com.example.myapp.common.util.HttpUtil;
 import com.example.myapp.db.DetailDatabaseHelper;
+import com.google.gson.Gson;
 
 /**
  * 主页面的fragment
@@ -55,8 +60,7 @@ public class FragmentMainPage extends Fragment {
 	private String[] titles = new String[] { "今天", "本周", "本月", "本年" };
 
 	/** 列表日期 */
-	private String[] dates = new String[] { "12月12日", "12月7日-12月13日",
-			"12月01日-12月31日", "01月01日-12月31日" };
+	private String[] dates = new String[4];
 
 	/** 消费金额 */
 	private String[] amounts = new String[] { "0.00", "100.00", "1000.00",
@@ -70,13 +74,31 @@ public class FragmentMainPage extends Fragment {
 		// 加载页面信息
 		View rootView = inflater.inflate(R.layout.fragment_main_page, null);
 
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-				"yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 		// 获取当前年月
 		Calendar calendar = Calendar.getInstance();
+		int currentMonth = calendar.get(Calendar.MONTH) + 1;
+		int maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+		Week week = new Week(calendar.getTime());
+		dates[0] = String.format("%02d月%02d日", currentMonth,
+				calendar.get(Calendar.DAY_OF_MONTH));
+		calendar = CalendarUtils.StringToCalendar(CalendarUtils
+				.toStandardDateString(week.getStartWeekDate()));
+		dates[1] = String.format("%02d月%02d日-",
+				calendar.get(Calendar.MONTH) + 1,
+				calendar.get(Calendar.DAY_OF_MONTH));
+		calendar = CalendarUtils.StringToCalendar(CalendarUtils
+				.toStandardDateString(week.getEndWeekDate()));
+		dates[1] += String.format("%02d月%02d日",
+				calendar.get(Calendar.MONTH) + 1,
+				calendar.get(Calendar.DAY_OF_MONTH));
+		calendar = Calendar.getInstance();
+		dates[2] = String.format("%02d月01日-%02d月%02d日", currentMonth,
+				currentMonth, maxDay);
+		dates[3] = "01月01日-12月31日";
+
 		TextView textViewMonth = (TextView) rootView.findViewById(R.id.month);
-		textViewMonth
-				.setText(String.valueOf((calendar.get(Calendar.MONTH) + 1)));
+		textViewMonth.setText(String.format("%02d",
+				calendar.get(Calendar.MONTH) + 1));
 		TextView textViewYear = (TextView) rootView.findViewById(R.id.year);
 		textViewYear.setText("/" + calendar.get(Calendar.YEAR));
 
@@ -94,16 +116,14 @@ public class FragmentMainPage extends Fragment {
 					cursor.getDouble(cursor.getColumnIndex("sumamount")));
 		}
 		// 获取周支出
-		Week week = new Week(calendar.getTime());
-		// Toast.makeText(getActivity(),
-		// simpleDateFormat.format(week.getStartWeekDate()),
-		// Toast.LENGTH_LONG).show();
 		cursor = readDatabase
 				.rawQuery(
 						"select sum(amount) as sumamount from detail_record where date >= ? and date <= ?",
 						new String[] {
-								simpleDateFormat.format(week.getStartWeekDate()),
-								simpleDateFormat.format(week.getEndWeekDate()) });
+								CalendarUtils.toStandardDateString(week
+										.getStartWeekDate()),
+								CalendarUtils.toStandardDateString(week
+										.getEndWeekDate()) });
 		// 设置周支出
 		if (cursor.moveToFirst()) {
 			amounts[1] = String.format("%.2f",
@@ -176,13 +196,90 @@ public class FragmentMainPage extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(getActivity(),
 						AddDetailActivity.class);
 				startActivity(intent);
 			}
 		});
 
+		// 同步数据至服务器
+		Button buttonUpdateToServer = (Button) rootView
+				.findViewById(R.id.main_page_update_to_server);
+		buttonUpdateToServer.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+					updateToServer();
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
 		return rootView;
+	}
+
+	private void updateToServer() throws UnsupportedEncodingException {
+		Cursor cursor = dbHelper.getReadableDatabase().rawQuery(
+				"select * from detail_record", null);
+		final List<DetailItem> detailList = new ArrayList<DetailItem>();
+		while (cursor.moveToNext()) {
+			DetailItem item = new DetailItem();
+			item.setUuid(cursor.getString(cursor.getColumnIndex("uuid")));
+			item.setLastModifyDate(cursor.getString(cursor
+					.getColumnIndex("lastModifyDate")));
+			item.setDayDetailConsumeDate(cursor.getString(cursor
+					.getColumnIndex("date")));
+			item.setDayDetailAccountType(new String(cursor.getBlob(cursor
+					.getColumnIndex("accountType")), "gb2312"));
+			item.setDayDetailConsumeType(new String(cursor.getBlob(cursor
+					.getColumnIndex("type")), "gb2312"));
+			item.setDayDetailConsumeAmount(cursor.getString(cursor
+					.getColumnIndex("amount")));
+			detailList.add(item);
+		}
+		new Thread() {
+			@Override
+			public void run() {
+				Looper.prepare();
+				try {
+					getData(detailList);
+				} catch (Exception e) {
+					Log.e("engle", e.getMessage());
+				}
+				Looper.loop();
+			}
+		}.start();
+	}
+
+	public void getData(List<DetailItem> detailList) throws Exception {
+		// List<DetailItem> detailList = new ArrayList<DetailItem>();
+		// DetailItem detailItem = new DetailItem();
+		// detailItem.setUuid("e43091e1-ee8f-4d91-92ee-8b308400c5a0");
+		// detailItem.setDayDetailConsumeDate("2016-01-06 11:11:11");
+		// detailItem.setDayDetailConsumeType("吃饭");
+		// detailItem.setDayDetailAccountType("支付宝");
+		// detailItem.setDayDetailConsumeAmount(String.format("%.2f", 99.99));
+		// detailItem.setLastModifyDate("2016-01-06 11:11:11");
+		// detailList.add(detailItem);
+		// detailItem = new DetailItem();
+		// detailItem.setUuid("e43091e1-ee8f-4d91-92ee-8b308400c5a1");
+		// detailItem.setDayDetailConsumeDate("2016-01-06 11:11:11");
+		// detailItem.setDayDetailConsumeType("吃饭");
+		// detailItem.setDayDetailAccountType("支付宝");
+		// detailItem.setDayDetailConsumeAmount(String.format("%.2f", 99.99));
+		// detailItem.setLastModifyDate("2016-01-06 11:11:11");
+		// detailList.add(detailItem);
+
+		Gson gson = new Gson();
+		String strJson = gson.toJson(detailList);
+
+		Map<String, String> map1 = new HashMap<String, String>();
+		map1.put("detailList", strJson);
+		map1.put("sessionId",
+				((GlobleData) getActivity().getApplication()).getSessionId());
+		String url1 = "";
+		url1 = HttpUtil.BASE_URL + "Synchronization.action";
+		HttpUtil.postRequest(url1, map1);
 	}
 }

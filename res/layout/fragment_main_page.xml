@@ -12,6 +12,7 @@
         android:background="@color/main_style_color" >
 
         <!-- 显示当前年月 -->
+
         <RelativeLayout
             android:id="@+id/date"
             android:layout_width="match_parent"
@@ -51,37 +52,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/account_center_title"
-        android:layout_centerHorizontal="true"
-        android:background="@color/main_style_color" >
+        android:background="@color/main_style_color"
+        android:gravity="center_vertical|center_horizontal"
+        android:paddingBottom="30dp"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp"
+        android:paddingTop="30dp" >
 
         <!-- 显示支出金额 -->
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/amountText"
+            style="@style/style1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal" >
+            android:text="@string/str_title_amount_text" />
 
-            <TextView
-                android:id="@+id/amountText"
-                style="@style/style1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="@string/str_title_amount_text" />
-
-            <TextView
-                android:id="@+id/amountValue"
-                style="@style/style1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:layout_toEndOf="@id/amountText" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/amountValue"
+            style="@style/style1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/amountText" />
     </RelativeLayout>
 
     <!-- 添加明细按钮 -->
@@ -99,7 +92,8 @@
             android:layout_margin="10dp"
             android:background="@drawable/shape"
             android:text="@string/str_button_add_detail"
-            android:textSize="18sp" />
+            android:textColor="@color/white"
+            android:textSize="20sp" />
     </RelativeLayout>
 
     <!-- 明细 -->
@@ -116,6 +110,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
         </ListView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detail"
+        android:gravity="center_vertical|center_horizontal"
+        android:padding="20dp" >
+
+        <Button
+            android:id="@+id/main_page_update_to_server"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="同步至服务器" />
+
+        <Button
+            android:id="@+id/main_page_download_to_local"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/main_page_update_to_server"
+            android:text="同步到本地" />
     </RelativeLayout>
 
 </RelativeLayout>

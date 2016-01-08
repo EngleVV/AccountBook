@@ -8,7 +8,10 @@
         android:minSdkVersion="19"
         android:targetSdkVersion="19" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name="com.example.myapp.GlobleData"
         android:allowBackup="true"
         android:icon="@drawable/icon_application"
         android:label="@string/app_name"
@@ -23,8 +26,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.myapp.activities.ShowDetailActivity"
+            android:name=".activities.ShowDetailActivity"
             android:label="@string/title_activity_show_detail" >
+        </activity>
+        <activity
+            android:name="com.example.myapp.activities.LoginActivity"
+            android:label="@string/title_activity_login" >
         </activity>
     </application>
 
