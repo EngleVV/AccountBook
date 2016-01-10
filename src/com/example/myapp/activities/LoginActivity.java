@@ -36,9 +36,11 @@ public class LoginActivity extends Activity {
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			Toast.makeText(getApplicationContext(),
-					((GlobleData) getApplication()).getSessionId(),
-					Toast.LENGTH_SHORT).show();
+			if (msg.what == 0x123) {
+				Toast.makeText(getApplicationContext(), "登陆成功",
+						Toast.LENGTH_SHORT).show();
+				finish();
+			}
 		}
 	};
 
@@ -46,7 +48,7 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		Button buttonLogin = (Button) findViewById(R.id.login_btn_login);
+		final Button buttonLogin = (Button) findViewById(R.id.login_btn_login);
 		sharedPreferences = getSharedPreferences("login_info", MODE_PRIVATE);
 		editor = sharedPreferences.edit();
 
@@ -67,6 +69,9 @@ public class LoginActivity extends Activity {
 						Looper.loop();
 					}
 				}.start();
+				// finish();
+				// 此处等待,显示登录提示
+				buttonLogin.setText("登录中");
 			}
 		});
 	}
@@ -90,7 +95,6 @@ public class LoginActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void login(String username, String password) {
 		// 登录代码
 		Map<String, String> map = new HashMap<String, String>();
@@ -110,9 +114,12 @@ public class LoginActivity extends Activity {
 			if (null != loginSession.getSessionId()) {
 				globleData.setUsername(username);
 				globleData.setSessionId(loginSession.getSessionId());
-				editor.putString("sessionid", loginSession.getSessionId());
-				Toast.makeText(this, "登录成功" + loginSession.getSessionId(),
-						Toast.LENGTH_SHORT).show();
+				globleData.setIsLogin(true);
+				editor.putString("username", username);
+				editor.putString("sessionId", loginSession.getSessionId());
+				editor.apply();
+				// Toast.makeText(this, "登录成功" + loginSession.getSessionId(),
+				// Toast.LENGTH_SHORT).show();
 			} else {
 				// 登录失败代码
 				Toast.makeText(this, "登录失败", Toast.LENGTH_SHORT).show();
@@ -122,4 +129,5 @@ public class LoginActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
+
 }

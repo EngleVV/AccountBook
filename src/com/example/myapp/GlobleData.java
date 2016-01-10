@@ -6,6 +6,7 @@
 package com.example.myapp;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 
 /**
  * 存放全局变量
@@ -19,6 +20,9 @@ public class GlobleData extends Application {
 
 	/** 每次访问服务器则用这个sessionId去访问 */
 	private String sessionId;
+
+	/** 用户的登陆状态 */
+	private Boolean isLogin;
 
 	/**
 	 * @return the username
@@ -50,9 +54,39 @@ public class GlobleData extends Application {
 		this.sessionId = sessionId;
 	}
 
+	/**
+	 * @return the isLogin
+	 */
+	public Boolean getIsLogin() {
+		return isLogin;
+	}
+
+	/**
+	 * @param isLogin
+	 *            the isLogin to set
+	 */
+	public void setIsLogin(Boolean isLogin) {
+		this.isLogin = isLogin;
+	}
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
+
+		SharedPreferences sharedPreferences = getSharedPreferences(
+				"login_info", MODE_PRIVATE);
+		setUsername(sharedPreferences.getString("username", null));
+		setSessionId(sharedPreferences.getString("sessionId", null));
+		setIsLogin(null);
+	}
+
+	/**
+	 * 清除变量
+	 */
+	public void clear() {
+		this.isLogin = false;
+		this.sessionId = null;
+		this.username = null;
 	}
 
 }

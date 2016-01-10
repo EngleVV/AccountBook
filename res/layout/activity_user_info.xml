@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    tools:context="com.example.myapp.UserInfoActivity" >
 
     <RelativeLayout
-        android:id="@+id/account_center_title"
+        android:id="@+id/user_info_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/main_style_color" >
@@ -16,24 +16,25 @@
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:gravity="center_horizontal|center_vertical"
-            android:text="@string/str_title_setting_center" />
+            android:text="@string/str_title_user_info" />
     </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/user_info_title"
         android:layout_marginTop="10dp"
         android:orientation="vertical" >
 
         <Button
-            android:id="@+id/setting_center_btn_login"
+            android:id="@+id/user_info_btn_logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/selector_main_page_add_detail"
             android:padding="10dp"
-            android:text="@string/str_button_login"
+            android:text="@string/str_button_logout"
             android:textColor="@color/white" />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

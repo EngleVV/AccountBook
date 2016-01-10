@@ -14,5 +14,6 @@
     <color name="dateRangeColor">#B8B6BA</color>
     <color name="groupAmount">#2B7752</color>
     <color name="itemBackground">#CCCCCC</color>
+    <color name="btnPressed">#175DC7</color>
 
 </resources>

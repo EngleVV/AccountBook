@@ -43,6 +43,16 @@
             android:layout_margin="15dp"
             android:gravity="center_horizontal|center_vertical"
             android:text="@string/str_title_main_page" />
+
+        <TextView
+            android:id="@+id/main_page_login"
+            style="@style/mainPageLoginStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:text="@string/str_main_page_login" />
     </RelativeLayout>
 
     <!-- 第一个框 -->
@@ -90,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/shape"
+            android:background="@drawable/selector_main_page_add_detail"
             android:text="@string/str_button_add_detail"
             android:textColor="@color/white"
             android:textSize="20sp" />
@@ -112,7 +122,7 @@
         </ListView>
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/detail"
@@ -121,17 +131,24 @@
 
         <Button
             android:id="@+id/main_page_update_to_server"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="同步至服务器" />
+            android:layout_weight="1"
+            android:background="@drawable/selector_main_page_add_detail"
+            android:padding="10dp"
+            android:text="@string/str_button_update_server"
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/main_page_download_to_local"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_toEndOf="@id/main_page_update_to_server"
-            android:text="同步到本地" />
-    </RelativeLayout>
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_main_page_add_detail"
+            android:padding="10dp"
+            android:text="@string/str_button_download_local"
+            android:textColor="@color/white" />
+    </LinearLayout>
 
 </RelativeLayout>

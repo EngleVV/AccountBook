@@ -11,7 +11,7 @@
         android:layout_margin="10dp"
         android:background="@drawable/selector_edittext_bg"
         android:hint="@string/str_hint_modify_balance"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:padding="10dp" />
 
 </LinearLayout>

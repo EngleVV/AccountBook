@@ -9,8 +9,8 @@ package com.example.myapp.common.util;
  * @author Engle
  * 
  */
-public class StringUtils {
-	private StringUtils() {
+public class StringUtil {
+	private StringUtil() {
 
 	}
 
@@ -33,6 +33,25 @@ public class StringUtils {
 				return true;
 			}
 			return false;
+		}
+	}
+
+	/**
+	 * 判断字符串是否为空,str=null或者str=""均视为空
+	 * 
+	 * @param str
+	 *            字符串
+	 * @return 空返回true, 不空返回false
+	 */
+	public static Boolean isBlank(String str) {
+		if (null != str) {
+			if ("" == str) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return true;
 		}
 	}
 }
