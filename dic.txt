@@ -5,3 +5,4 @@ xml
 sql
 sessionid
 username
+uuid

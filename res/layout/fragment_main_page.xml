@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBaseline="@id/month"
-                android:layout_toEndOf="@id/month"
+                android:layout_toRightOf="@id/month"
                 android:textColor="#0f0"
                 android:textSize="10pt" />
         </RelativeLayout>
@@ -49,9 +49,9 @@
             style="@style/mainPageLoginStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
             android:text="@string/str_main_page_login" />
     </RelativeLayout>
 
@@ -76,7 +76,7 @@
             style="@style/style1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:text="@string/str_title_amount_text" />
 
         <TextView
@@ -84,7 +84,7 @@
             style="@style/style1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/amountText" />
+            android:layout_toRightOf="@id/amountText" />
     </RelativeLayout>
 
     <!-- 添加明细按钮 -->
@@ -121,34 +121,5 @@
             android:layout_height="wrap_content" >
         </ListView>
     </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/detail"
-        android:gravity="center_vertical|center_horizontal"
-        android:padding="20dp" >
-
-        <Button
-            android:id="@+id/main_page_update_to_server"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/selector_main_page_add_detail"
-            android:padding="10dp"
-            android:text="@string/str_button_update_server"
-            android:textColor="@color/white" />
-
-        <Button
-            android:id="@+id/main_page_download_to_local"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/selector_main_page_add_detail"
-            android:padding="10dp"
-            android:text="@string/str_button_download_local"
-            android:textColor="@color/white" />
-    </LinearLayout>
 
 </RelativeLayout>

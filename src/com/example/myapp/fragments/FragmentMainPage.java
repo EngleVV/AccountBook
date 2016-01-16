@@ -5,7 +5,6 @@
 
 package com.example.myapp.fragments;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -13,15 +12,11 @@ import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -40,18 +35,17 @@ import android.widget.Toast;
 import com.example.myapp.GlobleData;
 import com.example.myapp.R;
 import com.example.myapp.ServerResult;
-import com.example.myapp.UserInfoActivity;
 import com.example.myapp.activities.AddDetailActivity;
 import com.example.myapp.activities.LoginActivity;
 import com.example.myapp.activities.ShowDetailActivity;
-import com.example.myapp.common.DetailItem;
+import com.example.myapp.activities.UserInfoActivity;
 import com.example.myapp.common.Week;
 import com.example.myapp.common.util.CalendarUtils;
 import com.example.myapp.common.util.HttpUtil;
 import com.example.myapp.common.util.StringUtil;
 import com.example.myapp.db.DetailDatabaseHelper;
+import com.example.myapp.db.SqlQuery;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 /**
  * 主页面的fragment
@@ -61,7 +55,7 @@ import com.google.gson.reflect.TypeToken;
 public class FragmentMainPage extends Fragment {
 
 	/** 数据库操作对象 */
-	private DetailDatabaseHelper dbHelper;
+	private DetailDatabaseHelper detailDbHelper;
 
 	/** 列表logo */
 	private int[] logos = new int[] { R.drawable.date_day,
@@ -90,8 +84,8 @@ public class FragmentMainPage extends Fragment {
 		// 加载页面信息
 		rootView = inflater.inflate(R.layout.fragment_main_page, null);
 
-		final GlobleData globleData = (GlobleData) getActivity()
-				.getApplication();
+		detailDbHelper = new DetailDatabaseHelper(getActivity(), "detail.db3",
+				1);
 
 		final TextView textViewLogin = (TextView) rootView
 				.findViewById(R.id.main_page_login);
@@ -124,7 +118,6 @@ public class FragmentMainPage extends Fragment {
 							.show();
 				}
 				System.out.println(msg.what);
-				Log.i("handler", String.valueOf(msg.what));
 			}
 		};
 
@@ -156,30 +149,6 @@ public class FragmentMainPage extends Fragment {
 				Intent intent = new Intent(getActivity(),
 						AddDetailActivity.class);
 				startActivity(intent);
-			}
-		});
-
-		// 同步数据至服务器
-		Button buttonUpdateToServer = (Button) rootView
-				.findViewById(R.id.main_page_update_to_server);
-		buttonUpdateToServer.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				try {
-					updateToServer(handler);
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-
-		// 从数据库同步到本地
-		Button buttonDownloadToLocal = (Button) rootView
-				.findViewById(R.id.main_page_download_to_local);
-		buttonDownloadToLocal.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				downloadToLocal(handler);
 			}
 		});
 
@@ -228,8 +197,6 @@ public class FragmentMainPage extends Fragment {
 
 		setListAmounts(rootView);
 		setList(rootView);
-		// Toast.makeText(getActivity(), "onResume called", Toast.LENGTH_SHORT)
-		// .show();
 	}
 
 	private void setLoginState(final Handler handler) {
@@ -366,56 +333,34 @@ public class FragmentMainPage extends Fragment {
 		Calendar calendar = Calendar.getInstance();
 		Week week = new Week(calendar.getTime());
 		String strToday = CalendarUtils.toStandardDateString(calendar);
-		dbHelper = new DetailDatabaseHelper(getActivity(), "detail.db3", 1);
-		SQLiteDatabase readDatabase = dbHelper.getReadableDatabase();
-		// 获取日支出
-		Cursor cursor = readDatabase
-				.rawQuery(
+
+		amounts[0] = detailDbHelper
+				.querySumAmount(new SqlQuery(
 						"select sum(amount) as sumamount from detail_record where date like ?",
-						new String[] { strToday.substring(0, 10) + "%" });
-		// 设置日支出
-		if (cursor.moveToFirst()) {
-			amounts[0] = String.format("%.2f",
-					cursor.getDouble(cursor.getColumnIndex("sumamount")));
-		}
+						new String[] { strToday.substring(0, 10) + "%" }));
+
 		// 获取周支出
-		cursor = readDatabase
-				.rawQuery(
+		amounts[1] = detailDbHelper
+				.querySumAmount(new SqlQuery(
 						"select sum(amount) as sumamount from detail_record where date >= ? and date <= ?",
 						new String[] {
 								CalendarUtils.toStandardDateString(week
 										.getStartWeekDate()),
 								CalendarUtils.toStandardDateString(week
-										.getEndWeekDate()) });
-		// 设置周支出
-		if (cursor.moveToFirst()) {
-			amounts[1] = String.format("%.2f",
-					cursor.getDouble(cursor.getColumnIndex("sumamount")));
-		}
+										.getEndWeekDate()) }));
 
 		// 获取月支出
-		cursor = readDatabase
-				.rawQuery(
+		amounts[2] = detailDbHelper
+				.querySumAmount(new SqlQuery(
 						"select sum(amount) as sumamount from detail_record where date like ?",
-						new String[] { strToday.substring(0, 7) + "%" });
-		// 设置月支出
-		if (cursor.moveToFirst()) {
-			amounts[2] = String.format("%.2f",
-					cursor.getDouble(cursor.getColumnIndex("sumamount")));
-		}
+						new String[] { strToday.substring(0, 7) + "%" }));
+
 		// 获取年支出
-		cursor = readDatabase
-				.rawQuery(
+		amounts[3] = detailDbHelper
+				.querySumAmount(new SqlQuery(
 						"select sum(amount) as sumamount from detail_record where date like ?",
-						new String[] { strToday.substring(0, 4) + "%" });
-		// 设置年支出
-		if (cursor.moveToFirst()) {
-			amounts[3] = String.format("%.2f",
-					cursor.getDouble(cursor.getColumnIndex("sumamount")));
-		}
-
+						new String[] { strToday.substring(0, 4) + "%" }));
 		setMonthAmount(v);
-
 	}
 
 	/**
@@ -457,121 +402,4 @@ public class FragmentMainPage extends Fragment {
 
 	}
 
-	/**
-	 * @throws UnsupportedEncodingException
-	 */
-	private void updateToServer(final Handler handler)
-			throws UnsupportedEncodingException {
-		Cursor cursor = dbHelper.getReadableDatabase().rawQuery(
-				"select * from detail_record", null);
-		final List<DetailItem> detailList = new ArrayList<DetailItem>();
-		while (cursor.moveToNext()) {
-			DetailItem item = new DetailItem();
-			item.setUuid(cursor.getString(cursor.getColumnIndex("uuid")));
-			item.setLastModifyDate(cursor.getString(cursor
-					.getColumnIndex("lastModifyDate")));
-			item.setDayDetailConsumeDate(cursor.getString(cursor
-					.getColumnIndex("date")));
-			item.setDayDetailAccountType(new String(cursor.getBlob(cursor
-					.getColumnIndex("accountType")), "gb2312"));
-			item.setDayDetailConsumeType(new String(cursor.getBlob(cursor
-					.getColumnIndex("type")), "gb2312"));
-			item.setDayDetailConsumeAmount(cursor.getString(cursor
-					.getColumnIndex("amount")));
-			detailList.add(item);
-		}
-		new Thread() {
-			@Override
-			public void run() {
-				Looper.prepare();
-				try {
-					// 返回true,同步成功
-					if (getData(detailList)) {
-						handler.sendEmptyMessage(0x567);
-					} else {
-						// 同步失败
-						handler.sendEmptyMessage(0x678);
-					}
-				} catch (Exception e) {
-					Log.e("engle", e.getMessage());
-				}
-				Looper.loop();
-			}
-		}.start();
-	}
-
-	/**
-	 * 同步至服务器
-	 * 
-	 * @param detailList
-	 * @throws Exception
-	 */
-	public Boolean getData(List<DetailItem> detailList) throws Exception {
-
-		Gson gson = new Gson();
-		String strJson = gson.toJson(detailList);
-		GlobleData globleData = (GlobleData) getActivity().getApplication();
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("username", globleData.getUsername());
-		map.put("detailList", strJson);
-		map.put("sessionId", globleData.getSessionId());
-		String url = HttpUtil.BASE_URL + "Synchronization.action";
-		ServerResult result = gson.fromJson(HttpUtil.postRequest(url, map),
-				ServerResult.class);
-		return result.getResult();
-	}
-
-	private void downloadToLocal(final Handler handler) {
-		new Thread() {
-			@Override
-			public void run() {
-
-				try {
-					GlobleData globleData = (GlobleData) getActivity()
-							.getApplication();
-					Map<String, String> map = new HashMap<String, String>();
-					map.put("username", globleData.getUsername());
-					map.put("sessionId", globleData.getSessionId());
-					String url = HttpUtil.BASE_URL + "ClientGetDetail.action";
-					String strJson = HttpUtil.postRequest(url, map);
-					Gson gson = new Gson();
-					List<DetailItem> list = gson.fromJson(strJson,
-							new TypeToken<List<DetailItem>>() {
-							}.getType());
-					if (0 != list.size()) {
-						// 返回非空列表
-						// 将拿到的数据插入到本地数据库
-						for (DetailItem item : list) {
-							ContentValues contentValues = new ContentValues();
-							contentValues.put("uuid", item.getUuid());
-							contentValues.put("amount",
-									item.getDayDetailConsumeAmount());
-							contentValues.put("type",
-									item.getDayDetailConsumeType());
-							contentValues.put("date",
-									item.getDayDetailConsumeDate());
-							contentValues.put("accountType",
-									item.getDayDetailAccountType());
-							contentValues.put("lastModifyDate",
-									item.getLastModifyDate());
-							dbHelper = new DetailDatabaseHelper(getActivity(),
-									"detail.db3", 1);
-							dbHelper.getWritableDatabase().insert(
-									"detail_record", null, contentValues);
-						}
-
-						handler.sendEmptyMessage(0x001);
-					} else {
-						// 空列表
-						handler.sendEmptyMessage(0x002);
-					}
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					// 解析出错
-					handler.sendEmptyMessage(0x003);
-				}
-			}
-		}.start();
-	}
 }

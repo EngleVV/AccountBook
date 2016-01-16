@@ -5,11 +5,13 @@
 
 package com.example.myapp.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 
 import com.example.myapp.R;
 import com.example.myapp.fragments.details.FragmentDayDetail;
@@ -23,7 +25,7 @@ public class ShowDetailActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_show_detail);
-
+		setButtonBack(this);
 		Intent intent = getIntent();
 		int position = intent.getIntExtra("position", 0);
 		switch (position) {
@@ -54,22 +56,14 @@ public class ShowDetailActivity extends FragmentActivity {
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.show_detail, menu);
-		return true;
-	}
+	private void setButtonBack(final Context context) {
+		ImageView imageViewBack = (ImageView) findViewById(R.id.show_detail_title_btn_back);
+		imageViewBack.setOnClickListener(new OnClickListener() {
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 	}
 }

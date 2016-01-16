@@ -14,7 +14,6 @@ import android.util.Log;
 
 import com.example.myapp.ServerResult;
 import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
 
 /**
  * 判断用户当前是否处于登陆状态

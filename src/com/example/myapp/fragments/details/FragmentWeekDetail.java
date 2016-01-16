@@ -27,7 +27,7 @@ public class FragmentWeekDetail extends FragmentItemDetail {
 	protected SqlQuery getSqlQuery() {
 		Calendar calendar = Calendar.getInstance();
 		Week week = new Week(calendar.getTime());
-		String sqlString = "select amount,type,date,accountType from detail_record where date >= ? and date <= ? order by date desc";
+		String sqlString = "select uuid,amount,type,date,accountType,lastModifyDate from detail_record where date >= ? and date <= ? order by date desc";
 		String sqlConditions[] = new String[] {
 				CalendarUtils.toStandardDateString(week.getStartWeekDate()),
 				CalendarUtils.toStandardDateString(week.getEndWeekDate()) };

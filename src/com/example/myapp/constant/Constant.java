@@ -3,7 +3,7 @@
  * https://github.com/EngleVV/MyRepository
  * Copyright (c) 2004-2015 All Rights Reserved.
  */
-package com.example.myapp;
+package com.example.myapp.constant;
 
 /**
  * @author Engle

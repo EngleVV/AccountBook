@@ -24,7 +24,7 @@ public class FragmentDayDetail extends FragmentItemDetail {
 	protected SqlQuery getSqlQuery() {
 		Calendar calendar = Calendar.getInstance();
 		String strToday = CalendarUtils.toStandardDateString(calendar);
-		String sqlString = "select amount,type,date,accountType from detail_record where date like ? order by date desc";
+		String sqlString = "select uuid,amount,type,date,accountType,lastModifyDate from detail_record where date like ? order by date desc";
 		String sqlConditions[] = new String[] { strToday.substring(0, 10) + "%" };
 		return new SqlQuery(sqlString, sqlConditions);
 	}

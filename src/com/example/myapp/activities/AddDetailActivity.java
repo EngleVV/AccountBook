@@ -5,19 +5,21 @@
 
 package com.example.myapp.activities;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,16 +28,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapp.R;
+import com.example.myapp.common.DetailItem;
 import com.example.myapp.common.util.CalendarUtils;
+import com.example.myapp.db.AccountDatabaseHelper;
 import com.example.myapp.db.DetailDatabaseHelper;
 
 /**
  * @author Engle 添加一笔记账记录的activity
  */
 public class AddDetailActivity extends Activity {
-
-	/** 数据库操作类 */
-	private DetailDatabaseHelper dbHelper;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,15 @@ public class AddDetailActivity extends Activity {
 		textViewConsumeDate.setText(CalendarUtils
 				.toStandardDateString(calendar));
 
+		// 给账户名设置选项
+		Spinner spinnerAccount = (Spinner) findViewById(R.id.add_detail_item_accounttype_value);
+		AccountDatabaseHelper accountDbHelper = new AccountDatabaseHelper(this,
+				"account.db3", 1);
+		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_dropdown_item,
+				accountDbHelper.queryAccountName());
+		spinnerAccount.setAdapter(arrayAdapter);
+
 		// 保存按钮的事件监听
 		Button button = (Button) findViewById(R.id.add_detail_button_submit);
 		button.setOnClickListener(new OnClickListener() {
@@ -55,32 +65,42 @@ public class AddDetailActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				try {
-					// 要插入数据库的数据
-					ContentValues contentValues = new ContentValues();
-					// 金额
+					// 获取各个组件
 					EditText editTextAmount = (EditText) findViewById(R.id.add_detail_item_amount_value);
-					contentValues.put("amount", editTextAmount.getText()
-							.toString());
 					Spinner spinnerType = (Spinner) findViewById(R.id.add_detail_item_type_value);
-					contentValues.put("type", spinnerType.getSelectedItem()
-							.toString().getBytes("gb2312"));
 					EditText editTextDate = (EditText) findViewById(R.id.add_detail_item_date_value);
-					contentValues
-							.put("date", editTextDate.getText().toString());
 					Spinner spinnerAccountType = (Spinner) findViewById(R.id.add_detail_item_accounttype_value);
-					contentValues.put("accountType", spinnerAccountType
-							.getSelectedItem().toString()
-							.getBytes("gb2312" + ""));
 
-					contentValues.put("lastModifyDate",
-							CalendarUtils.toStandardDateString(new Date()));
+					// 保存消费类型和账户类型
+					String strConsumeType = spinnerType
+							.getSelectedItem().toString();
+					String strAccountType = spinnerAccountType
+							.getSelectedItem().toString();
 
-					contentValues.put("uuid", UUID.randomUUID().toString());
+					DetailItem item = new DetailItem();
+					item.setDayDetailConsumeAmount(editTextAmount.getText()
+							.toString());
+					item.setDayDetailConsumeType(strConsumeType);
+					item.setDayDetailAccountType(strAccountType);
+					item.setDayDetailConsumeDate(editTextDate.getText()
+							.toString());
+					item.setLastModifyDate(CalendarUtils
+							.toStandardDateString(new Date()));
+					item.setUuid(UUID.randomUUID().toString());
+					List<DetailItem> detailList = new ArrayList<DetailItem>();
+					detailList.add(item);
+					/** 数据库操作类 */
+					DetailDatabaseHelper detailDbHelper = new DetailDatabaseHelper(
+							AddDetailActivity.this, "detail.db3", 1);
+					detailDbHelper.insertList(detailList);
 
-					dbHelper = new DetailDatabaseHelper(AddDetailActivity.this,
-							"detail.db3", 1);
-					dbHelper.getWritableDatabase().insert("detail_record",
-							null, contentValues);
+					// 同时更新对应账户的余额
+					AccountDatabaseHelper accountDbHelper = new AccountDatabaseHelper(
+							AddDetailActivity.this, "account.db3", 1);
+					Double amount = Double.parseDouble(editTextAmount.getText()
+							.toString());
+					accountDbHelper.cutBalance(strAccountType, amount);
+
 				} catch (Exception e) {
 					Toast.makeText(AddDetailActivity.this, "插入异常",
 							Toast.LENGTH_SHORT).show();

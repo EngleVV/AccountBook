@@ -8,14 +8,21 @@
         android:id="@+id/show_detail_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_style_color" >
+        android:background="@color/main_style_color"
+        android:padding="5dp" >
+
+        <ImageView
+            android:id="@+id/show_detail_title_btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/selector_btn_add_detail_back" />
 
         <TextView
             style="@style/titleStyle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:gravity="center_horizontal|center_vertical"
+            android:layout_centerInParent="true"
             android:text="@string/str_title_show_detail" />
     </RelativeLayout>
 
@@ -46,7 +53,7 @@
                 style="@style/style1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/show_detail_title_text"
+                android:layout_toRightOf="@id/show_detail_title_text"
                 android:text="100元" />
         </RelativeLayout>
     </LinearLayout>

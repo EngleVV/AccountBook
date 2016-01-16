@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -11,18 +12,18 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.myapp.GlobleData;
 import com.example.myapp.LoginSession;
 import com.example.myapp.R;
 import com.example.myapp.common.util.HttpUtil;
+import com.example.myapp.common.util.StringUtil;
 import com.google.gson.Gson;
 
 public class LoginActivity extends Activity {
@@ -33,6 +34,8 @@ public class LoginActivity extends Activity {
 	/** 写入preferences */
 	private Editor editor;
 
+	private Button buttonLogin;
+
 	private Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -40,6 +43,17 @@ public class LoginActivity extends Activity {
 				Toast.makeText(getApplicationContext(), "登陆成功",
 						Toast.LENGTH_SHORT).show();
 				finish();
+			} else if (msg.what == 0x456) {
+				// 登陆失败
+				buttonLogin.setText("登录");
+				Toast.makeText(getApplicationContext(), "密码错误,请重试",
+						Toast.LENGTH_SHORT).show();
+
+			} else if (msg.what == 0x789) {
+				// 网络异常
+				buttonLogin.setText("登录");
+				Toast.makeText(getApplicationContext(), "网络异常,请重试",
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 	};
@@ -48,10 +62,14 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		final Button buttonLogin = (Button) findViewById(R.id.login_btn_login);
+		buttonLogin = (Button) findViewById(R.id.login_btn_login);
 		sharedPreferences = getSharedPreferences("login_info", MODE_PRIVATE);
 		editor = sharedPreferences.edit();
 
+		// 设置返回按钮
+		setButtonBack(this);
+
+		// 设置登陆按钮响应事件
 		buttonLogin.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -76,23 +94,15 @@ public class LoginActivity extends Activity {
 		});
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.login, menu);
-		return true;
-	}
+	private void setButtonBack(final Context context) {
+		ImageView imageViewBack = (ImageView) findViewById(R.id.login_title_btn_back);
+		imageViewBack.setOnClickListener(new OnClickListener() {
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 	}
 
 	private void login(String username, String password) {
@@ -110,23 +120,21 @@ public class LoginActivity extends Activity {
 					LoginSession.class);
 			// 返回sessionid则登录成功
 			Log.i(username, loginSession.getSessionId());
-			handler.sendEmptyMessage(0x123);
-			if (null != loginSession.getSessionId()) {
+			if (!StringUtil.isBlank(loginSession.getSessionId())) {
 				globleData.setUsername(username);
 				globleData.setSessionId(loginSession.getSessionId());
 				globleData.setIsLogin(true);
 				editor.putString("username", username);
 				editor.putString("sessionId", loginSession.getSessionId());
 				editor.apply();
-				// Toast.makeText(this, "登录成功" + loginSession.getSessionId(),
-				// Toast.LENGTH_SHORT).show();
+				handler.sendEmptyMessage(0x123);
 			} else {
-				// 登录失败代码
-				Toast.makeText(this, "登录失败", Toast.LENGTH_SHORT).show();
+				// 登录失败代码,密码错误
+				handler.sendEmptyMessage(0x456);
 			}
 		} catch (Exception e) {
-			Toast.makeText(this, "异常", Toast.LENGTH_SHORT).show();
-			e.printStackTrace();
+			// 网络异常
+			handler.sendEmptyMessage(0x789);
 		}
 	}
 

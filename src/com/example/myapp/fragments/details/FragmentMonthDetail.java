@@ -10,13 +10,13 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import android.database.Cursor;
 import android.widget.TextView;
 
 import com.example.myapp.R;
 import com.example.myapp.common.GroupDetailItem;
 import com.example.myapp.common.Week;
 import com.example.myapp.db.DetailDatabaseHelper;
+import com.example.myapp.db.SqlQuery;
 import com.example.myapp.fragments.parents.FragmentGroupDetail;
 
 /**
@@ -29,7 +29,8 @@ public class FragmentMonthDetail extends FragmentGroupDetail {
 	 * 加载父视图数据
 	 */
 	@Override
-	protected GroupDetailItem loadGroupViewData(DetailDatabaseHelper dbHelper) {
+	protected GroupDetailItem loadGroupViewData(
+			DetailDatabaseHelper detailDbHelper) {
 		List<String> dateIndex = new ArrayList<String>();
 		List<String> dateRangeList = new ArrayList<String>();
 		List<String> dateRangeStartList = new ArrayList<String>();
@@ -72,21 +73,18 @@ public class FragmentMonthDetail extends FragmentGroupDetail {
 			}
 
 			// 在此处计算GroupView内所需的总金额
-			Cursor cursor = dbHelper
-					.getReadableDatabase()
-					.rawQuery(
+			String strAmount = detailDbHelper
+					.querySumAmount(new SqlQuery(
 							"select sum(amount) as sumamount from detail_record where date >= ? and date <= ?",
 							new String[] {
 									dateRangeStartList.get(dateRangeStartList
 											.size() - 1),
 									dateRangeEndList.get(dateRangeEndList
-											.size() - 1) });
-			if (cursor.moveToFirst()) {
-				double amount = cursor.getDouble(cursor
-						.getColumnIndex("sumamount"));
-				sumAmount += amount;
-				dateAmountList.add(String.format("%.2f", amount));
-			}
+											.size() - 1) }));
+
+			double amount = Double.parseDouble(strAmount);
+			sumAmount += amount;
+			dateAmountList.add(String.format("%.2f", amount));
 
 		}
 		TextView textViewTitleAmount = (TextView) getActivity().findViewById(

@@ -6,27 +6,29 @@
 package com.example.myapp.fragments;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapp.AccountItem;
 import com.example.myapp.R;
 import com.example.myapp.db.AccountDatabaseHelper;
 
@@ -38,21 +40,14 @@ public class FragmentAccountCenter extends Fragment {
 
 	/** 条目的logo */
 	private final int logos[] = new int[] { R.drawable.logo_pay_cash,
-			R.drawable.logo_pay_bankcard, R.drawable.logo_pay_zhifubao,
-			R.drawable.logo_pay_weixin };
-
-	/** 条目标题名称 */
-	private final String names[] = new String[] { "现金", "银行卡", "支付宝", "微信" };
-
-	/** 账户余额值 */
-	private String balanceAmount[] = new String[] { "111.11", "222.22",
-			"333.33", "444.44" };
+			R.drawable.logo_pay_bankcard, R.drawable.logo_pay_ewallet,
+			R.drawable.logo_pay_others };
 
 	/** 编辑按钮图标 */
 	private final int modify = R.drawable.logo_pay_modify;
 
 	/** 数据库操作对象 */
-	private AccountDatabaseHelper dbHelper;
+	private AccountDatabaseHelper accountDbHelper;
 
 	/** 页面对象 */
 	private View rootView;
@@ -62,47 +57,93 @@ public class FragmentAccountCenter extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_account_center, null);
+		accountDbHelper = new AccountDatabaseHelper(getActivity(),
+				"account.db3", 1);
 
 		// 从数据库中获取值来显示
-		SetViewAmount();
-
+		final List<AccountItem> accountList = accountDbHelper
+				.queryAccountList();
 		AccountListAdapter accountListAdapter = new AccountListAdapter(
-				getActivity());
+				getActivity(), accountList);
 
 		// 为listView设置simpleAdapter
 		ListView listViewAccountList = (ListView) rootView
 				.findViewById(R.id.account_list);
 		listViewAccountList.setAdapter(accountListAdapter);
 
+		// 添加账户按钮
+		setAddAccountButton(inflater);
+
 		return rootView;
+	}
+
+	private void setAddAccountButton(final LayoutInflater inflater) {
+		ImageButton imageButtonAddAccount = (ImageButton) rootView
+				.findViewById(R.id.account_center_title_add_account);
+		imageButtonAddAccount.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				final View dialogShowView = inflater.inflate(
+						R.layout.dialog_view_add_account, null);
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						getActivity());
+				builder.setTitle("新增自定义账户")
+						.setIcon(R.id.account_center_title_add_account)
+						.create();
+				builder.setView(dialogShowView)
+						.setPositiveButton("确认",
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										AccountItem item = new AccountItem();
+										EditText editViewAccountName = (EditText) dialogShowView
+												.findViewById(R.id.add_account_name);
+										String accountName = editViewAccountName
+												.getText().toString();
+										Spinner spinnerAccountType = (Spinner) dialogShowView
+												.findViewById(R.id.add_account_type);
+										String accountType = spinnerAccountType
+												.getSelectedItem().toString();
+										String accountAmount = "0.00";
+										int priority = spinnerAccountType
+												.getSelectedItemPosition();
+
+										item.setAccountAmount(accountAmount);
+										item.setAccountName(accountName);
+										item.setAccountType(accountType);
+										item.setPriority(priority);
+										accountDbHelper.insertAccount(item);
+										refresh();
+									}
+								})
+						.setNegativeButton("取消",
+								new DialogInterface.OnClickListener() {
+
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+
+									}
+								}).create().show();
+
+			}
+		});
 	}
 
 	/**
 	 * 刷新页面
 	 */
 	public void refresh() {
-		SetViewAmount();
+		// SetViewAmount();
 		ListView listViewAccountList = (ListView) rootView
 				.findViewById(R.id.account_list);
 		AccountListAdapter accountListAdapter = new AccountListAdapter(
-				getActivity());
+				getActivity(), accountDbHelper.queryAccountList());
 		listViewAccountList.setAdapter(accountListAdapter);
 		listViewAccountList.invalidate();
-	}
-
-	/**
-	 * 从数据库中获取余额来显示
-	 */
-	private void SetViewAmount() {
-		dbHelper = new AccountDatabaseHelper(getActivity(), "account.db3", 1);
-		SQLiteDatabase readDatabase = dbHelper.getReadableDatabase();
-		Cursor cursor = readDatabase.rawQuery(
-				"select amount from account_list", null);
-		int index = 0;
-		while (cursor.moveToNext()) {
-			balanceAmount[index++] = String.format("%.2f",
-					cursor.getDouble(cursor.getColumnIndex("amount")));
-		}
 	}
 
 	/**
@@ -110,7 +151,10 @@ public class FragmentAccountCenter extends Fragment {
 	 */
 	public class AccountListAdapter extends BaseAdapter {
 		/** 获取视图 */
-		LayoutInflater inflater;
+		private LayoutInflater inflater;
+
+		/** 数据 */
+		private List<AccountItem> accountList;
 
 		/**
 		 * 构造函数
@@ -118,13 +162,14 @@ public class FragmentAccountCenter extends Fragment {
 		 * @param context
 		 *            上下文
 		 */
-		public AccountListAdapter(Context context) {
+		public AccountListAdapter(Context context, List<AccountItem> list) {
 			inflater = LayoutInflater.from(context);
+			accountList = list;
 		}
 
 		@Override
 		public int getCount() {
-			return names.length;
+			return accountList.size();
 		}
 
 		@Override
@@ -159,9 +204,12 @@ public class FragmentAccountCenter extends Fragment {
 				viewHolder = (ViewHolder) convertView.getTag();
 			}
 
-			viewHolder.imageViewLogo.setImageResource(logos[position]);
-			viewHolder.textViewName.setText(names[position]);
-			viewHolder.textViewAmount.setText(balanceAmount[position]);
+			viewHolder.imageViewLogo.setImageResource(logos[accountList.get(
+					position).getPriority()]);
+			viewHolder.textViewName.setText(accountList.get(position)
+					.getAccountName());
+			viewHolder.textViewAmount.setText(accountList.get(position)
+					.getAccountAmount());
 			viewHolder.imageViewModify.setImageResource(modify);
 
 			// 给listView中的按钮绑定点击事件
@@ -171,18 +219,56 @@ public class FragmentAccountCenter extends Fragment {
 						@Override
 						public void onClick(View v) {
 							View dialogShowView = inflater.inflate(
-									R.layout.simple_item_modify_balance, null);
+									R.layout.dialog_view_modify_balance, null);
 							AlertDialog.Builder builder = new AlertDialog.Builder(
 									getActivity());
-							builder.setTitle("修改" + names[position] + "账户余额")
+							builder.setTitle(
+									"修改"
+											+ accountList.get(position)
+													.getAccountName() + "账户余额")
 									.setIcon(modify).create();
 							builder.setView(dialogShowView);
 							setPositiveButtion(builder, dialogShowView,
-									position);
+									position, accountList);
 							setNegativeButtion(builder).create().show();
 
 						}
 					});
+
+			convertView.setOnLongClickListener(new OnLongClickListener() {
+
+				@Override
+				public boolean onLongClick(View v) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							getActivity());
+					builder.setTitle("删除")
+							.setMessage("是否确认删除")
+							.setPositiveButton("确认",
+									new DialogInterface.OnClickListener() {
+
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+
+											if (accountDbHelper
+													.deleteAccount(accountList
+															.get(position)
+															.getId())) {
+												Toast.makeText(getActivity(),
+														"删除成功",
+														Toast.LENGTH_SHORT)
+														.show();
+												refresh();
+											}
+
+										}
+
+									}).create().show();
+					return true;
+
+				}
+			});
 
 			return convertView;
 		}
@@ -195,7 +281,7 @@ public class FragmentAccountCenter extends Fragment {
 		 */
 		private AlertDialog.Builder setPositiveButtion(
 				AlertDialog.Builder builder, final View dialogShowView,
-				final int position) {
+				final int position, final List<AccountItem> list) {
 			return builder.setPositiveButton("确认",
 					new DialogInterface.OnClickListener() {
 
@@ -207,17 +293,9 @@ public class FragmentAccountCenter extends Fragment {
 							String strAmount = editTextAmount.getText()
 									.toString();
 							if (ValidateInputAmount(strAmount)) {
-								try {
-									dbHelper.getWritableDatabase()
-											.execSQL(
-													"update account_list set amount = ? where id = ?",
-													new String[] {
-															strAmount,
-															String.valueOf(position) });
-								} catch (SQLException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
+								accountDbHelper.modifyBalance(list
+										.get(position).getId(), strAmount);
+
 								DialogNotKeepShowing(dialog);
 								Toast.makeText(getActivity(), "修改成功",
 										Toast.LENGTH_SHORT);

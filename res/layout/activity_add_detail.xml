@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <!-- 标题 -->
+
     <RelativeLayout
         android:id="@+id/add_detail_title"
         android:layout_width="match_parent"
@@ -15,7 +17,7 @@
             android:id="@+id/add_detail_title_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:src="@drawable/selector_btn_add_detail_back" />
 
         <TextView
@@ -27,107 +29,152 @@
             android:text="@string/str_title_add_detail" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <!-- 输入金额 -->
+
+    <LinearLayout
         android:id="@+id/add_detail_item_amount"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_below="@id/add_detail_title"
-        android:layout_margin="10dp"
-        android:background="@drawable/border"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical" >
 
         <TextView
             android:id="@+id/add_detail_item_amount_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
             android:text="@string/str_tip_input_amount" />
 
         <EditText
             android:id="@+id/add_detail_item_amount_value"
             style="@style/amountStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:layout_weight="1"
             android:background="@null"
             android:cursorVisible="false"
+            android:gravity="right"
             android:hint="@string/str_amount"
             android:inputType="numberDecimal"
             android:textColorHint="@color/red" />
-    </RelativeLayout>
+    </LinearLayout>
 
-    <RelativeLayout
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/add_detail_item_amount"
+        android:background="@color/white" />
+
+    <!-- 选择消费类型 -->
+
+    <LinearLayout
         android:id="@+id/add_detail_item_type"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_below="@id/add_detail_item_amount"
-        android:layout_margin="10dp"
-        android:background="@drawable/border"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
         android:gravity="center_vertical" >
 
         <TextView
             android:id="@+id/add_detail_item_type_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            android:layout_weight="3"
+            android:gravity="center_vertical|left"
             android:text="@string/str_tip_choose_type" />
 
         <Spinner
             android:id="@+id/add_detail_item_type_value"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:background="@color/red"
-            android:entries="@array/consume_types" />
-    </RelativeLayout>
+            android:layout_weight="2"
+            android:entries="@array/consume_types"
+            android:gravity="center_horizontal" />
+    </LinearLayout>
 
-    <RelativeLayout
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/add_detail_item_type"
+        android:background="@color/white" />
+
+    <!-- 消费时间 -->
+
+    <LinearLayout
         android:id="@+id/add_detail_item_date"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_below="@id/add_detail_item_type"
-        android:layout_margin="10dp"
-        android:background="@drawable/border"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
         android:gravity="center_vertical" >
 
         <TextView
             android:id="@+id/add_detail_item_date_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            android:layout_weight="3"
+            android:gravity="center_vertical|left"
             android:text="@string/str_tip_choose_date" />
 
         <EditText
             android:id="@+id/add_detail_item_date_value"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:layout_weight="2"
+            android:gravity="right"
             android:inputType="date" />
-    </RelativeLayout>
+    </LinearLayout>
 
-    <RelativeLayout
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/add_detail_item_date"
+        android:background="@color/white" />
+
+    <LinearLayout
         android:id="@+id/add_detail_item_accounttype"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_below="@id/add_detail_item_date"
-        android:layout_margin="10dp"
-        android:background="@drawable/border"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
         android:gravity="center_vertical" >
 
         <TextView
             android:id="@+id/add_detail_item_accounttype_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            android:layout_weight="3"
+            android:gravity="center_vertical|left"
             android:text="@string/str_tip_choose_account_type" />
 
         <Spinner
             android:id="@+id/add_detail_item_accounttype_value"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:entries="@array/account_types" />
-    </RelativeLayout>
+            android:layout_weight="2"
+            android:entries="@array/account_types"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/add_detail_item_accounttype"
+        android:background="@color/white" />
 
     <LinearLayout
         android:id="@+id/add_detail_button"

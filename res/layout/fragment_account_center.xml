@@ -1,36 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    <RelativeLayout 
+    <RelativeLayout
         android:id="@+id/account_center_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_style_color"
-        >
-        <TextView 
+        android:background="@color/main_style_color" >
+
+        <TextView
+            style="@style/titleStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/str_title_account_center"
-            android:gravity="center_horizontal|center_vertical"
-            style="@style/titleStyle"
             android:layout_margin="15dp"
-            />
-        
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/str_title_account_center" />
+
+        <ImageButton
+            android:id="@+id/account_center_title_add_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@color/main_style_color"
+            android:src="@drawable/selector_btn_account_center_add_account" />
     </RelativeLayout>
-    
-    
-	<ListView 
-	    android:id="@+id/account_list"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:layout_marginStart="10dp"
-		android:layout_marginTop="10dp"
-		android:layout_marginEnd="10dp"
-		android:cacheColorHint="#00000000"
-		android:listSelector="#00000000"
-	    ></ListView>
-    
+
+    <ListView
+        android:id="@+id/account_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp" >
+    </ListView>
+
 </LinearLayout>

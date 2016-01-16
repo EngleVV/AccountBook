@@ -12,6 +12,9 @@ package com.example.myapp.common;
  */
 public class DayDetailItem {
 
+	/** uuid */
+	private String uuid;
+
 	/** 日期 */
 	private String dayDetailMonthDay;
 
@@ -26,6 +29,21 @@ public class DayDetailItem {
 
 	/** 消费金额 */
 	private String dayDetailConsumeAmount;
+
+	/**
+	 * @return the uuid
+	 */
+	public String getUuid() {
+		return uuid;
+	}
+
+	/**
+	 * @param uuid
+	 *            the uuid to set
+	 */
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 
 	/**
 	 * @return the dayDetailMonthDay

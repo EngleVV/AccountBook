@@ -34,6 +34,26 @@
             android:padding="10dp"
             android:text="@string/str_button_login"
             android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/setting_center_update_to_server"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/selector_main_page_add_detail"
+            android:padding="10dp"
+            android:text="@string/str_button_update_server"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/setting_center_download_to_local"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/selector_main_page_add_detail"
+            android:padding="10dp"
+            android:text="@string/str_button_download_local"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string-array name="consume_types">
         <item>吃饭</item>
         <item>出行</item>
@@ -7,4 +8,11 @@
         <item>住房</item>
         <item>其他</item>
     </string-array>
+    <string-array name="account_types">
+        <item>现金账户</item>
+        <item>银行卡账户</item>
+        <item>虚拟账户</item>
+        <item>其他账户</item>
+    </string-array>
+
 </resources>
