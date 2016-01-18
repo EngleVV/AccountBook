@@ -53,7 +53,17 @@ public class MessageHandler extends Handler implements Serializable {
 		} else if (msg.what == 0x003) {
 			// 下载异常
 			Toast.makeText(context, "下载数据异常", Toast.LENGTH_SHORT).show();
+		} else if (msg.what == 0x010) {
+			// 注册成功
+			Toast.makeText(context, "注册成功", Toast.LENGTH_SHORT).show();
+		} else if (msg.what == 0x011) {
+			// 注册失败
+			Toast.makeText(context, "注册失败", Toast.LENGTH_SHORT).show();
+		} else if (msg.what == 0x012) {
+			// 注册异常
+			Toast.makeText(context, "注册异常", Toast.LENGTH_SHORT).show();
 		}
+
 	}
 
 }

@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.example.myapp.AccountItem;
 import com.example.myapp.R;
+import com.example.myapp.common.util.InputCheckUtil;
 import com.example.myapp.db.AccountDatabaseHelper;
 
 /**
@@ -292,13 +293,13 @@ public class FragmentAccountCenter extends Fragment {
 									.findViewById(R.id.modify_balance_amount);
 							String strAmount = editTextAmount.getText()
 									.toString();
-							if (ValidateInputAmount(strAmount)) {
+							if (InputCheckUtil.CheckAmount(strAmount)) {
 								accountDbHelper.modifyBalance(list
 										.get(position).getId(), strAmount);
 
 								DialogNotKeepShowing(dialog);
 								Toast.makeText(getActivity(), "修改成功",
-										Toast.LENGTH_SHORT);
+										Toast.LENGTH_SHORT).show();
 								refresh();
 							} else {
 								Toast.makeText(getActivity(), "输入金额无效,请重新输入",
@@ -326,24 +327,6 @@ public class FragmentAccountCenter extends Fragment {
 							DialogNotKeepShowing(dialog);
 						}
 					});
-		}
-
-		/**
-		 * 校验输入金额是否合法
-		 * 
-		 * @param strAmount
-		 * @return
-		 */
-		private Boolean ValidateInputAmount(String strAmount) {
-			double amount = 0.0;
-			try {
-				amount = Double.parseDouble(strAmount);
-			} catch (Exception e) {
-				return false;
-			}
-			if (amount < 0.0 || amount > 99999999.0)
-				return false;
-			return true;
 		}
 
 		/**

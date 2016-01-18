@@ -5,6 +5,7 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -17,12 +18,15 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapp.GlobleData;
 import com.example.myapp.LoginSession;
 import com.example.myapp.R;
+import com.example.myapp.RegisterActivity;
 import com.example.myapp.common.util.HttpUtil;
+import com.example.myapp.common.util.InputCheckUtil;
 import com.example.myapp.common.util.StringUtil;
 import com.google.gson.Gson;
 
@@ -79,17 +83,42 @@ public class LoginActivity extends Activity {
 				username = editTextUsername.getText().toString();
 				EditText editTextPassword = (EditText) findViewById(R.id.login_password);
 				password = editTextPassword.getText().toString();
-				new Thread() {
-					@Override
-					public void run() {
-						Looper.prepare();
-						login(username, password);
-						Looper.loop();
+				if (InputCheckUtil.CheckUsername(username)) {
+					if (InputCheckUtil.CheckPassword(password)) {
+						new Thread() {
+							@Override
+							public void run() {
+								Looper.prepare();
+								login(username, password);
+								Looper.loop();
+							}
+						}.start();
+						// finish();
+						// 此处等待,显示登录提示
+						buttonLogin.setText("登录中");
+					} else {
+						// 提示密码输入不合理
+						Toast.makeText(getApplicationContext(), "密码长度应为6~16位",
+								Toast.LENGTH_SHORT).show();
 					}
-				}.start();
-				// finish();
-				// 此处等待,显示登录提示
-				buttonLogin.setText("登录中");
+				} else {
+					// 提示用户名输入不合理
+					Toast.makeText(getApplicationContext(), "用户名长度应为4~16位",
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+
+		// 注册按钮
+		TextView textViewRegister = (TextView) findViewById(R.id.login_register);
+		textViewRegister.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(LoginActivity.this,
+						RegisterActivity.class);
+				startActivity(intent);
 			}
 		});
 	}

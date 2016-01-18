@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.example.myapp.R;
 import com.example.myapp.common.DetailItem;
 import com.example.myapp.common.util.CalendarUtils;
+import com.example.myapp.common.util.InputCheckUtil;
 import com.example.myapp.db.AccountDatabaseHelper;
 import com.example.myapp.db.DetailDatabaseHelper;
 
@@ -72,39 +73,47 @@ public class AddDetailActivity extends Activity {
 					Spinner spinnerAccountType = (Spinner) findViewById(R.id.add_detail_item_accounttype_value);
 
 					// 保存消费类型和账户类型
-					String strConsumeType = spinnerType
-							.getSelectedItem().toString();
+					String strConsumeAmount = editTextAmount.getText()
+							.toString();
+					String strConsumeType = spinnerType.getSelectedItem()
+							.toString();
 					String strAccountType = spinnerAccountType
 							.getSelectedItem().toString();
 
-					DetailItem item = new DetailItem();
-					item.setDayDetailConsumeAmount(editTextAmount.getText()
-							.toString());
-					item.setDayDetailConsumeType(strConsumeType);
-					item.setDayDetailAccountType(strAccountType);
-					item.setDayDetailConsumeDate(editTextDate.getText()
-							.toString());
-					item.setLastModifyDate(CalendarUtils
-							.toStandardDateString(new Date()));
-					item.setUuid(UUID.randomUUID().toString());
-					List<DetailItem> detailList = new ArrayList<DetailItem>();
-					detailList.add(item);
-					/** 数据库操作类 */
-					DetailDatabaseHelper detailDbHelper = new DetailDatabaseHelper(
-							AddDetailActivity.this, "detail.db3", 1);
-					detailDbHelper.insertList(detailList);
+					if (InputCheckUtil.CheckAmount(strConsumeAmount)) {
+						DetailItem item = new DetailItem();
+						item.setDayDetailConsumeAmount(strConsumeAmount);
+						item.setDayDetailConsumeType(strConsumeType);
+						item.setDayDetailAccountType(strAccountType);
+						item.setDayDetailConsumeDate(editTextDate.getText()
+								.toString());
+						item.setLastModifyDate(CalendarUtils
+								.toStandardDateString(new Date()));
+						item.setUuid(UUID.randomUUID().toString());
+						List<DetailItem> detailList = new ArrayList<DetailItem>();
+						detailList.add(item);
+						/** 数据库操作类 */
+						DetailDatabaseHelper detailDbHelper = new DetailDatabaseHelper(
+								AddDetailActivity.this, "detail.db3", 1);
+						detailDbHelper.insertList(detailList);
 
-					// 同时更新对应账户的余额
-					AccountDatabaseHelper accountDbHelper = new AccountDatabaseHelper(
-							AddDetailActivity.this, "account.db3", 1);
-					Double amount = Double.parseDouble(editTextAmount.getText()
-							.toString());
-					accountDbHelper.cutBalance(strAccountType, amount);
+						// 同时更新对应账户的余额
+						AccountDatabaseHelper accountDbHelper = new AccountDatabaseHelper(
+								AddDetailActivity.this, "account.db3", 1);
+						Double amount = Double.parseDouble(editTextAmount
+								.getText().toString());
+						accountDbHelper.cutBalance(strAccountType, amount);
+					} else {
+						// 输入金额不合法
+						Toast.makeText(getApplicationContext(), "输入金额不合法",
+								Toast.LENGTH_SHORT).show();
+					}
 
 				} catch (Exception e) {
 					Toast.makeText(AddDetailActivity.this, "插入异常",
 							Toast.LENGTH_SHORT).show();
 				}
+
 			}
 		});
 

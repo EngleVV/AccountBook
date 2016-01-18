@@ -34,13 +34,22 @@
             android:label="@string/title_activity_login" >
         </activity>
         <activity
-            android:name="com.example.myapp.activities.UserInfoActivity"
+            android:name=".activities.UserInfoActivity"
             android:label="@string/title_activity_user_info" >
         </activity>
 
         <!-- Services -->
-        <service android:name="com.example.myapp.services.ServiceUpload" >
+        <service android:name=".services.ServiceUpload" >
         </service>
+        <service android:name=".services.ServiceDownload" >
+        </service>
+        <service android:name=".services.ServiceRegister" >
+        </service>
+
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/title_activity_register" >
+        </activity>
     </application>
 
 </manifest>
