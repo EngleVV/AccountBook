@@ -31,27 +31,61 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/login_username"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/selector_edittext_bg"
-            android:hint="@string/str_username"
-            android:inputType="text"
-            android:padding="10dp"
-            android:text="engle" />
+            android:layout_height="wrap_content" >
 
-        <EditText
-            android:id="@+id/login_password"
+            <EditText
+                android:id="@+id/login_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/selector_edittext_bg"
+                android:hint="@string/str_username"
+                android:inputType="text"
+                android:paddingBottom="10dp"
+                android:paddingLeft="45dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:text="engle" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/login_username"
+                android:layout_alignLeft="@id/login_username"
+                android:layout_alignTop="@id/login_username"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/login_edit_username" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/selector_edittext_bg"
-            android:hint="@string/str_password"
-            android:inputType="textPassword"
-            android:padding="10dp"
-            android:text="123" />
+            android:layout_height="wrap_content" >
+
+            <EditText
+                android:id="@+id/login_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/selector_edittext_bg"
+                android:hint="@string/str_password"
+                android:inputType="textPassword"
+                android:paddingBottom="10dp"
+                android:paddingLeft="45dp"
+                android:paddingRight="10dp"
+                android:paddingTop="10dp"
+                android:text="123456" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/login_password"
+                android:layout_alignLeft="@id/login_password"
+                android:layout_alignTop="@id/login_password"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/login_edit_password" />
+        </RelativeLayout>
 
         <Button
             android:id="@+id/login_btn_login"

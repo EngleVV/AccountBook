@@ -28,7 +28,11 @@ public class DetailDatabaseHelper extends SQLiteOpenHelper {
 
 	/** 建表sql语句 */
 	final String CREATE_TABLE_SQL = "create table detail_record(uuid primary key, "
-			+ "amount, " + "type, " + "date, " + "accountType, lastModifyDate)";
+			+ "amount, "
+			+ "user, "
+			+ "type, "
+			+ "date, "
+			+ "accountType, lastModifyDate)";
 
 	public DetailDatabaseHelper(Context context, String name, int version) {
 		super(context, name, null, version);
@@ -63,6 +67,7 @@ public class DetailDatabaseHelper extends SQLiteOpenHelper {
 				values.put("lastModifyDate", item.getLastModifyDate());
 				values.put("accountType", item.getDayDetailAccountType()
 						.getBytes("gb2312"));
+				values.put("user", item.getDayDetailUsername());
 				values.put("uuid", item.getUuid());
 				if (this.getWritableDatabase().insert(TABLE_NAME, null, values) < 0) {
 					return false;
@@ -128,6 +133,16 @@ public class DetailDatabaseHelper extends SQLiteOpenHelper {
 	public Boolean deleteDetail(String uuid) {
 		if ((this.getWritableDatabase().delete(TABLE_NAME, "uuid = ?",
 				new String[] { uuid })) <= 0) {
+			return false;
+		}
+		return true;
+	}
+
+	public Boolean updateUser(String username) {
+		ContentValues values = new ContentValues();
+		values.put("user", username);
+		if ((this.getWritableDatabase().update(TABLE_NAME, values, "user = ''",
+				null)) <= 0) {
 			return false;
 		}
 		return true;

@@ -15,6 +15,9 @@ public class DetailItem {
 	/** uuid主键 */
 	private String uuid;
 
+	/** 用户名 */
+	private String dayDetailUsername;
+
 	/** 日期 */
 	private String dayDetailConsumeDate;
 
@@ -43,6 +46,21 @@ public class DetailItem {
 	 */
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
+	}
+
+	/**
+	 * @return the dayDetailUsername
+	 */
+	public String getDayDetailUsername() {
+		return dayDetailUsername;
+	}
+
+	/**
+	 * @param dayDetailUsername
+	 *            the dayDetailUsername to set
+	 */
+	public void setDayDetailUsername(String dayDetailUsername) {
+		this.dayDetailUsername = dayDetailUsername;
 	}
 
 	/**

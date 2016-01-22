@@ -333,33 +333,38 @@ public class FragmentMainPage extends Fragment {
 		Calendar calendar = Calendar.getInstance();
 		Week week = new Week(calendar.getTime());
 		String strToday = CalendarUtils.toStandardDateString(calendar);
-
+		String strUsername = ((GlobleData) getActivity().getApplication())
+				.getUsername();
+		strUsername = (null == strUsername) ? "" : strUsername;
 		amounts[0] = detailDbHelper
 				.querySumAmount(new SqlQuery(
-						"select sum(amount) as sumamount from detail_record where date like ?",
-						new String[] { strToday.substring(0, 10) + "%" }));
+						"select sum(amount) as sumamount from detail_record where date like ? and user = ?",
+						new String[] { strToday.substring(0, 10) + "%",
+								strUsername }));
 
 		// 获取周支出
 		amounts[1] = detailDbHelper
 				.querySumAmount(new SqlQuery(
-						"select sum(amount) as sumamount from detail_record where date >= ? and date <= ?",
+						"select sum(amount) as sumamount from detail_record where date >= ? and date <= ? and user = ?",
 						new String[] {
 								CalendarUtils.toStandardDateString(week
 										.getStartWeekDate()),
 								CalendarUtils.toStandardDateString(week
-										.getEndWeekDate()) }));
+										.getEndWeekDate()), strUsername }));
 
 		// 获取月支出
 		amounts[2] = detailDbHelper
 				.querySumAmount(new SqlQuery(
-						"select sum(amount) as sumamount from detail_record where date like ?",
-						new String[] { strToday.substring(0, 7) + "%" }));
+						"select sum(amount) as sumamount from detail_record where date like ? and user = ?",
+						new String[] { strToday.substring(0, 7) + "%",
+								strUsername }));
 
 		// 获取年支出
 		amounts[3] = detailDbHelper
 				.querySumAmount(new SqlQuery(
-						"select sum(amount) as sumamount from detail_record where date like ?",
-						new String[] { strToday.substring(0, 4) + "%" }));
+						"select sum(amount) as sumamount from detail_record where date like ? and user = ?",
+						new String[] { strToday.substring(0, 4) + "%",
+								strUsername }));
 		setMonthAmount(v);
 	}
 

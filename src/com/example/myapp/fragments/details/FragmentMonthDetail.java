@@ -12,6 +12,7 @@ import java.util.Locale;
 
 import android.widget.TextView;
 
+import com.example.myapp.GlobleData;
 import com.example.myapp.R;
 import com.example.myapp.common.GroupDetailItem;
 import com.example.myapp.common.Week;
@@ -73,14 +74,17 @@ public class FragmentMonthDetail extends FragmentGroupDetail {
 			}
 
 			// 在此处计算GroupView内所需的总金额
+			String strUsername = ((GlobleData) getActivity().getApplication())
+					.getUsername();
+			strUsername = (null == strUsername) ? "" : strUsername;
 			String strAmount = detailDbHelper
 					.querySumAmount(new SqlQuery(
-							"select sum(amount) as sumamount from detail_record where date >= ? and date <= ?",
+							"select sum(amount) as sumamount from detail_record where date >= ? and date <= ? and user = ?",
 							new String[] {
 									dateRangeStartList.get(dateRangeStartList
 											.size() - 1),
 									dateRangeEndList.get(dateRangeEndList
-											.size() - 1) }));
+											.size() - 1), strUsername }));
 
 			double amount = Double.parseDouble(strAmount);
 			sumAmount += amount;

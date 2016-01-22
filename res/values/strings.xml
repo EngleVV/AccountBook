@@ -40,5 +40,6 @@
     <string name="str_title_register">注册</string>
     <string name="str_button_register">点击注册</string>
     <string name="title_activity_register">RegisterActivity</string>
+    <string name="str_hint_add_account">输入新增账户名称</string>
 
 </resources>

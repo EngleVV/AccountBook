@@ -26,6 +26,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapp.GlobleData;
 import com.example.myapp.R;
 import com.example.myapp.common.DayDetailItem;
 import com.example.myapp.common.DetailItem;
@@ -124,16 +125,19 @@ abstract public class FragmentGroupDetail extends Fragment {
 	protected List<List<DayDetailItem>> loadChildViewData(
 			GroupDetailItem groupDetailItem, DetailDatabaseHelper detailDbHelper) {
 		List<List<DayDetailItem>> dayDetailList = new ArrayList<List<DayDetailItem>>();
+		String strUsername = ((GlobleData) getActivity().getApplication())
+				.getUsername();
+		strUsername = (null == strUsername) ? "" : strUsername;
 		for (int i = 0; i < groupDetailItem.getDateRangeList().size(); i++) {
 			List<DayDetailItem> dayDetail = new ArrayList<DayDetailItem>();
 			List<DetailItem> detailList = detailDbHelper
 					.queryDetailList(new SqlQuery(
-							"select uuid,amount,type,date,accountType,lastModifyDate from detail_record where date > ? and date < ? order by date desc",
+							"select uuid,amount,type,date,accountType,lastModifyDate from detail_record where date > ? and date < ? and user = ? order by date desc",
 							new String[] {
 									groupDetailItem.getDateRangeStartList()
 											.get(i),
 									groupDetailItem.getDateRangeEndList()
-											.get(i) }));
+											.get(i), strUsername }));
 			for (DetailItem item : detailList) {
 				DayDetailItem dayDetailItem = new DayDetailItem();
 				// 用明细日期初始化Calendar

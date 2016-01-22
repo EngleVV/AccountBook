@@ -51,6 +51,8 @@ public class DownloadManager {
 							contentValues.put("uuid", item.getUuid());
 							contentValues.put("amount",
 									item.getDayDetailConsumeAmount());
+							contentValues.put("user",
+									item.getDayDetailUsername());
 							contentValues.put(
 									"type",
 									item.getDayDetailConsumeType().getBytes(

@@ -28,6 +28,7 @@ import com.example.myapp.RegisterActivity;
 import com.example.myapp.common.util.HttpUtil;
 import com.example.myapp.common.util.InputCheckUtil;
 import com.example.myapp.common.util.StringUtil;
+import com.example.myapp.db.DetailDatabaseHelper;
 import com.google.gson.Gson;
 
 public class LoginActivity extends Activity {
@@ -156,6 +157,12 @@ public class LoginActivity extends Activity {
 				editor.putString("username", username);
 				editor.putString("sessionId", loginSession.getSessionId());
 				editor.apply();
+
+				// 将user为空的明细的用户改为当前登录用户
+				DetailDatabaseHelper detailDbHelper = new DetailDatabaseHelper(
+						getApplicationContext(), "detail.db3", 1);
+				detailDbHelper.updateUser(username);
+
 				handler.sendEmptyMessage(0x123);
 			} else {
 				// 登录失败代码,密码错误

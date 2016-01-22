@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.myapp.common.util.HttpUtil;
@@ -61,6 +62,15 @@ public class RegisterActivity extends Activity {
 				if (validateRegisterInfo(username, password, confirmPassword)) {
 					register(username, password, confirmPassword, handler);
 				}
+			}
+		});
+
+		ImageView buttonBack = (ImageView) findViewById(R.id.register_title_btn_back);
+		buttonBack.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				finish();
 			}
 		});
 

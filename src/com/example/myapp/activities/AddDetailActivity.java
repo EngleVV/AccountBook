@@ -27,6 +27,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapp.GlobleData;
 import com.example.myapp.R;
 import com.example.myapp.common.DetailItem;
 import com.example.myapp.common.util.CalendarUtils;
@@ -59,61 +60,37 @@ public class AddDetailActivity extends Activity {
 				accountDbHelper.queryAccountName());
 		spinnerAccount.setAdapter(arrayAdapter);
 
+		// 再记一笔按钮的事件
+		Button buttonRecordAgain = (Button) findViewById(R.id.add_detail_button_record_again);
+		buttonRecordAgain.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (AddDetail()) {
+					// 插入一笔明细之后重新输入
+					EditText editTextAmount = (EditText) findViewById(R.id.add_detail_item_amount_value);
+					Spinner spinnerType = (Spinner) findViewById(R.id.add_detail_item_type_value);
+					EditText editTextDate = (EditText) findViewById(R.id.add_detail_item_date_value);
+					Spinner spinnerAccountType = (Spinner) findViewById(R.id.add_detail_item_accounttype_value);
+
+					editTextAmount.setText(null);
+					spinnerType.setSelection(0);
+					editTextDate.setText(CalendarUtils
+							.toStandardDateString(Calendar.getInstance()));
+					spinnerAccountType.setSelection(0);
+				}
+			}
+		});
+
 		// 保存按钮的事件监听
 		Button button = (Button) findViewById(R.id.add_detail_button_submit);
 		button.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				try {
-					// 获取各个组件
-					EditText editTextAmount = (EditText) findViewById(R.id.add_detail_item_amount_value);
-					Spinner spinnerType = (Spinner) findViewById(R.id.add_detail_item_type_value);
-					EditText editTextDate = (EditText) findViewById(R.id.add_detail_item_date_value);
-					Spinner spinnerAccountType = (Spinner) findViewById(R.id.add_detail_item_accounttype_value);
-
-					// 保存消费类型和账户类型
-					String strConsumeAmount = editTextAmount.getText()
-							.toString();
-					String strConsumeType = spinnerType.getSelectedItem()
-							.toString();
-					String strAccountType = spinnerAccountType
-							.getSelectedItem().toString();
-
-					if (InputCheckUtil.CheckAmount(strConsumeAmount)) {
-						DetailItem item = new DetailItem();
-						item.setDayDetailConsumeAmount(strConsumeAmount);
-						item.setDayDetailConsumeType(strConsumeType);
-						item.setDayDetailAccountType(strAccountType);
-						item.setDayDetailConsumeDate(editTextDate.getText()
-								.toString());
-						item.setLastModifyDate(CalendarUtils
-								.toStandardDateString(new Date()));
-						item.setUuid(UUID.randomUUID().toString());
-						List<DetailItem> detailList = new ArrayList<DetailItem>();
-						detailList.add(item);
-						/** 数据库操作类 */
-						DetailDatabaseHelper detailDbHelper = new DetailDatabaseHelper(
-								AddDetailActivity.this, "detail.db3", 1);
-						detailDbHelper.insertList(detailList);
-
-						// 同时更新对应账户的余额
-						AccountDatabaseHelper accountDbHelper = new AccountDatabaseHelper(
-								AddDetailActivity.this, "account.db3", 1);
-						Double amount = Double.parseDouble(editTextAmount
-								.getText().toString());
-						accountDbHelper.cutBalance(strAccountType, amount);
-					} else {
-						// 输入金额不合法
-						Toast.makeText(getApplicationContext(), "输入金额不合法",
-								Toast.LENGTH_SHORT).show();
-					}
-
-				} catch (Exception e) {
-					Toast.makeText(AddDetailActivity.this, "插入异常",
-							Toast.LENGTH_SHORT).show();
+				if (AddDetail()) {
+					finish();
 				}
-
 			}
 		});
 
@@ -143,5 +120,62 @@ public class AddDetailActivity extends Activity {
 
 			}
 		}, 500);
+	}
+
+	private Boolean AddDetail() {
+		try {
+			// 获取各个组件
+			EditText editTextAmount = (EditText) findViewById(R.id.add_detail_item_amount_value);
+			Spinner spinnerType = (Spinner) findViewById(R.id.add_detail_item_type_value);
+			EditText editTextDate = (EditText) findViewById(R.id.add_detail_item_date_value);
+			Spinner spinnerAccountType = (Spinner) findViewById(R.id.add_detail_item_accounttype_value);
+
+			// 保存消费类型和账户类型
+			String strConsumeAmount = editTextAmount.getText().toString();
+			String strConsumeType = spinnerType.getSelectedItem().toString();
+			String strAccountType = spinnerAccountType.getSelectedItem()
+					.toString();
+			String strUsername = ((GlobleData) getApplication()).getUsername();
+			strUsername = (null == strUsername) ? "" : strUsername;
+
+			if (InputCheckUtil.CheckAmount(strConsumeAmount)) {
+				DetailItem item = new DetailItem();
+				item.setDayDetailConsumeAmount(strConsumeAmount);
+				item.setDayDetailConsumeType(strConsumeType);
+				item.setDayDetailAccountType(strAccountType);
+				item.setDayDetailConsumeDate(editTextDate.getText().toString());
+				item.setLastModifyDate(CalendarUtils
+						.toStandardDateString(new Date()));
+				item.setUuid(UUID.randomUUID().toString());
+				item.setDayDetailUsername(strUsername);
+				List<DetailItem> detailList = new ArrayList<DetailItem>();
+				detailList.add(item);
+				/** 数据库操作类 */
+				DetailDatabaseHelper detailDbHelper = new DetailDatabaseHelper(
+						AddDetailActivity.this, "detail.db3", 1);
+				detailDbHelper.insertList(detailList);
+
+				// 同时更新对应账户的余额
+				AccountDatabaseHelper accountDbHelper = new AccountDatabaseHelper(
+						AddDetailActivity.this, "account.db3", 1);
+				Double amount = Double.parseDouble(editTextAmount.getText()
+						.toString());
+				accountDbHelper.cutBalance(strAccountType, amount);
+				Toast.makeText(getApplicationContext(), "添加成功",
+						Toast.LENGTH_SHORT).show();
+				return true;
+			} else {
+				// 输入金额不合法
+				Toast.makeText(getApplicationContext(), "输入金额不合法",
+						Toast.LENGTH_SHORT).show();
+				return false;
+			}
+
+		} catch (Exception e) {
+			Toast.makeText(AddDetailActivity.this, "插入异常", Toast.LENGTH_SHORT)
+					.show();
+			return false;
+		}
+
 	}
 }
