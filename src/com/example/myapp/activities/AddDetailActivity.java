@@ -104,6 +104,18 @@ public class AddDetailActivity extends Activity {
 			}
 		});
 
+		// 标题栏的保存按钮
+		ImageView imageViewBtnSave = (ImageView) findViewById(R.id.add_detail_title_save);
+		imageViewBtnSave.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				if (AddDetail()) {
+					finish();
+				}
+			}
+		});
+
 		final EditText editTextAmountValue = (EditText) findViewById(R.id.add_detail_item_amount_value);
 		editTextAmountValue.setFocusable(true);
 		editTextAmountValue.setFocusableInTouchMode(true);

@@ -131,8 +131,6 @@ public class RegisterActivity extends Activity {
 						handler.sendEmptyMessage(0x011);
 					}
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 					handler.sendEmptyMessage(0x012);
 				}
 				Looper.loop();

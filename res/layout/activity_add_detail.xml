@@ -27,6 +27,15 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/str_title_add_detail" />
+
+        <ImageView
+            android:id="@+id/add_detail_title_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/selector_btn_add_detail_title_save" />
     </RelativeLayout>
 
     <!-- 输入金额 -->
